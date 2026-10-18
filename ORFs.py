@@ -27,8 +27,21 @@ def fasta_in():
 
     return seq
 
+def reverse_sequence(sequence):
+    reverse_seq = []
+    for n in list(sequence):
+        if n == "A": reverse_seq.append("T")
+        if n == "T": reverse_seq.append("A")
+        if n == "C": reverse_seq.append("G")
+        else: reverse_seq.append("C")
+
+    return "".join(reverse_seq)
+
+
 if __name__ == '__main__':
     # Original sequence
     input_seq = fasta_in()
-    print(input_seq)
+    print(input_seq[10])
 
+    reverse_seq = reverse_sequence(input_seq)
+    print(reverse_seq[10])
