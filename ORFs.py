@@ -1,3 +1,5 @@
+from Bio import SeqIO
+
 
 # What needs to be done and how I visualize programs structure:
 # 1. Input
@@ -7,5 +9,22 @@
 # 5. Print out results (Coordinates, sequence, reading frame, length, score)
 
 
+# Testing bacteria genome
+# https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_037044595.1/
+# Mycoplasma mycoides JCVI-syn3.0
+# Smallest genome
 
+
+# Code recreated from:
+# https://lanadominkovic.medium.com/bioinformatics-101-reading-fasta-files-using-biopython-501c390c6820
+def fasta_in():
+    for seq in SeqIO.parse("input/JCVI-syn3.0.fasta", "fasta"):
+        print(seq.id)
+        print(seq.seq)
+        print(repr(seq.seq))
+        print(len(seq))
+
+
+if __name__ == '__main__':
+    fasta_in()
 
