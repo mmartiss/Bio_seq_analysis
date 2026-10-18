@@ -18,7 +18,8 @@ from Bio import SeqIO
 # Code recreated from:
 # https://lanadominkovic.medium.com/bioinformatics-101-reading-fasta-files-using-biopython-501c390c6820
 def fasta_in():
-    for sequence in SeqIO.parse("input/JCVI-syn3.0.fasta", "fasta"):
+    #for sequence in SeqIO.parse("input/JCVI-syn3.0.fasta", "fasta"):
+    for sequence in SeqIO.parse("input/test.fasta", "fasta"):
         # print(sequence.id)
         # print(sequence.seq)
         # print(repr(sequence.seq))
@@ -37,6 +38,7 @@ def reverse_sequence(sequence):
         # This doesn't work:
         #else: reverse_seq.append("C")
 
+    reverse_seq = reverse_seq.reverse()
     return "".join(reverse_seq)
 
 def reading_frame(start, sequence):
