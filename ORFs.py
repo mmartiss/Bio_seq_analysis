@@ -49,10 +49,24 @@ def reading_frame(start, sequence):
         return None
     return frame
 
+def reading_frame_shift(shift, sequence):
+    # iteruoti per butent ta shift
+    shifted_frame = []
+    index = 0
+    for i in len(sequence):
+        shifted_frame.append(reading_frame(i+shift+index, sequence))
+        index += 3
+
+    return shifted_frame
+
+
 def get_all_possible_reading_frames(sequence):
     frames=[]
-    for i in range(len(sequence)):
-        frames.append(reading_frame(i, sequence))
+    # reikia poslinkiu 0,1,2
+    # reikia indekso keitimo kas 3
+
+    for shift in 3:
+        frames.append(reading_frame_shift(shift, sequence))
 
     return frames
 
