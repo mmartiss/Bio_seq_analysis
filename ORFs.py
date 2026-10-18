@@ -38,7 +38,7 @@ def reverse_sequence(sequence):
         # This doesn't work:
         #else: reverse_seq.append("C")
 
-    reverse_seq = reverse_seq.reverse()
+    reverse_seq.reverse()
     return "".join(reverse_seq)
 
 def reading_frame(start, sequence):
@@ -54,7 +54,7 @@ def reading_frame_shift(shift, sequence):
     # iteruoti per butent ta shift
     shifted_frame = []
     index = 0
-    for i in len(sequence):
+    for i in range(len(sequence)):
         shifted_frame.append(reading_frame(i+shift+index, sequence))
         index += 3
 
@@ -66,7 +66,7 @@ def get_all_possible_reading_frames(sequence):
     # reikia poslinkiu 0,1,2
     # reikia indekso keitimo kas 3
 
-    for shift in 3:
+    for shift in range(3):
         frames.append(reading_frame_shift(shift, sequence))
 
     return frames
@@ -88,3 +88,9 @@ if __name__ == '__main__':
     # frames = get_all_possible_reading_frames(input_seq)
     # for i in range(len(input_seq)):
     #     print(frames[i])
+
+
+    forward_frames = get_all_possible_reading_frames(input_seq)
+    for frame in forward_frames: print(frame)
+
+    #ATGAAATAG
