@@ -33,7 +33,9 @@ def reverse_sequence(sequence):
         if n == "A": reverse_seq.append("T")
         if n == "T": reverse_seq.append("A")
         if n == "C": reverse_seq.append("G")
-        else: reverse_seq.append("C")
+        if n == "G": reverse_seq.append("C")
+        # This doesn't work:
+        #else: reverse_seq.append("C")
 
     return "".join(reverse_seq)
 
@@ -41,7 +43,8 @@ def reverse_sequence(sequence):
 if __name__ == '__main__':
     # Original sequence
     input_seq = fasta_in()
-    print(input_seq[10])
-
     reverse_seq = reverse_sequence(input_seq)
-    print(reverse_seq[10])
+
+    # Test for complementarity:
+    #print(input_seq[0:10])
+    #print(reverse_seq[0:10])
