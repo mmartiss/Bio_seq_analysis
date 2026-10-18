@@ -43,7 +43,7 @@ def reverse_sequence(sequence):
 def reading_frame(start, sequence):
     # Maybe need a check for start to be a negative number
 
-    if start+3 <= len(sequence):
+    if start+3 <= len(sequence) and start >= 0:
         frame = sequence[start:start+3]
     else:
         return None
