@@ -18,13 +18,17 @@ from Bio import SeqIO
 # Code recreated from:
 # https://lanadominkovic.medium.com/bioinformatics-101-reading-fasta-files-using-biopython-501c390c6820
 def fasta_in():
-    for seq in SeqIO.parse("input/JCVI-syn3.0.fasta", "fasta"):
-        print(seq.id)
-        print(seq.seq)
-        print(repr(seq.seq))
-        print(len(seq))
+    for sequence in SeqIO.parse("input/JCVI-syn3.0.fasta", "fasta"):
+        # print(sequence.id)
+        # print(sequence.seq)
+        # print(repr(sequence.seq))
+        # print(len(sequence))
+        seq = sequence.seq
 
+    return seq
 
 if __name__ == '__main__':
-    fasta_in()
+    # Original sequence
+    input_seq = fasta_in()
+    print(input_seq)
 
