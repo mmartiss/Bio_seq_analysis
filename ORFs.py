@@ -39,6 +39,14 @@ def reverse_sequence(sequence):
 
     return "".join(reverse_seq)
 
+def reading_frame(start, sequence):
+    # Maybe need a check for start to be a negative number
+
+    if start+3 != len(sequence)-1:
+        frame = sequence[start:start+3]
+    else:
+        return None
+    return frame
 
 if __name__ == '__main__':
     # Original sequence
@@ -48,3 +56,7 @@ if __name__ == '__main__':
     # Test for complementarity:
     #print(input_seq[0:10])
     #print(reverse_seq[0:10])
+
+    # Tests for reading_frame function
+    # print(input_seq[0:3])
+    # print(reading_frame(0, input_seq))
