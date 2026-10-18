@@ -48,6 +48,13 @@ def reading_frame(start, sequence):
         return None
     return frame
 
+def get_all_possible_reading_frames(sequence):
+    frames=[]
+    for i in range(len(sequence)):
+        frames.append(reading_frame(i, sequence))
+
+    return frames
+
 if __name__ == '__main__':
     # Original sequence
     input_seq = fasta_in()
@@ -60,3 +67,8 @@ if __name__ == '__main__':
     # Tests for reading_frame function
     # print(input_seq[0:3])
     # print(reading_frame(0, input_seq))
+
+    # Test for get_all_possible_reading_frames function
+    # frames = get_all_possible_reading_frames(input_seq)
+    # for i in range(len(input_seq)):
+    #     print(frames[i])
