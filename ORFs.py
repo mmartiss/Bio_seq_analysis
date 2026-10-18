@@ -38,13 +38,12 @@ def reverse_sequence(sequence):
         # This doesn't work:
         #else: reverse_seq.append("C")
 
-    reverse_seq = reverse_seq.reverse()
-    return "".join(reverse_seq)
+    return "".join(reverse_seq.reverse())
 
 def reading_frame(start, sequence):
     # Maybe need a check for start to be a negative number
 
-    if start+3 != len(sequence)-1:
+    if start+3 <= len(sequence):
         frame = sequence[start:start+3]
     else:
         return None
