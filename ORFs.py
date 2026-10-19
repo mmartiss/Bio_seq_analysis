@@ -88,7 +88,12 @@ def join_reverse_forward_reading_frames():
     forward = get_all_possible_reading_frames(input_seq)
     reverse = get_all_possible_reading_frames(reverse_seq)
 
-    all_reading_frames = forward + reverse
+    all_reading_frames = []
+    for f, r in zip(forward, reverse):
+        # Pasirodo negaliu naudoti append, nes prideda kaip sarasa
+        all_reading_frames.extend(f)
+        all_reading_frames.extend(r)
+    #all_reading_frames = forward + reverse
     clean_frames = remove_none_from_list(all_reading_frames)
     return clean_frames
 
