@@ -70,11 +70,16 @@ def get_all_possible_reading_frames(sequence):
 
     return frames
 
-def remove_none_from_list(list):
-    for i in list:
-        if i is None:
-            list.pop(i)
-    return list
+def remove_none_from_list(frame_list):
+    # THis doesn't work:
+    # for i in reversed(frame_list):
+        # if i is None:
+        #     del frame_list[frame_list.index(i)]
+
+    # Maybe lambda
+    new_list = list(filter(lambda x: x != None, frame_list))
+    # Gal reiktu rasyti x is not None
+    return new_list
 
 def join_reverse_forward_reading_frames():
     input_seq = fasta_in()
@@ -84,8 +89,8 @@ def join_reverse_forward_reading_frames():
     reverse = get_all_possible_reading_frames(reverse_seq)
 
     all_reading_frames = forward + reverse
-    all_reading_frames = remove_none_from_list(all_reading_frames)
-    return all_reading_frames
+    clean_frames = remove_none_from_list(all_reading_frames)
+    return clean_frames
 
 
 if __name__ == '__main__':
