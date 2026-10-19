@@ -53,12 +53,9 @@ def reading_frame(start, sequence):
 def reading_frame_shift(shift, sequence):
     # iteruoti per butent ta shift
     shifted_frame = []
-    index = 0
     for i in range(shift, len(sequence), 3):
-        print(i)
-        
-        shifted_frame.append(reading_frame(i+shift+index, sequence))
-        index += 3
+        #print(i)
+        shifted_frame.append(reading_frame(i, sequence))
 
     return shifted_frame
 
@@ -91,7 +88,7 @@ if __name__ == '__main__':
     # for i in range(len(input_seq)):
     #     print(frames[i])
 
-    forward_frames = get_all_possible_reading_frames(input_seq)
-    for frame in forward_frames: print(frame)
+    #forward_frames = get_all_possible_reading_frames(input_seq)
+    #for frame in forward_frames: print(frame)
 
     #ATGAAATAG
