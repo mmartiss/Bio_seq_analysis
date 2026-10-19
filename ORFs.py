@@ -26,7 +26,7 @@ def fasta_in():
         # print(len(sequence))
         seq = sequence.seq
 
-    return seq
+    return str(seq)
 
 def reverse_sequence(sequence):
     reverse_seq = []
