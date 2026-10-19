@@ -70,6 +70,12 @@ def get_all_possible_reading_frames(sequence):
 
     return frames
 
+def remove_none_from_list(list):
+    for i in list:
+        if i is None:
+            list.pop(i)
+    return list
+
 def join_reverse_forward_reading_frames():
     input_seq = fasta_in()
     reverse_seq = reverse_sequence(input_seq)
@@ -78,7 +84,7 @@ def join_reverse_forward_reading_frames():
     reverse = get_all_possible_reading_frames(reverse_seq)
 
     all_reading_frames = forward + reverse
-
+    all_reading_frames = remove_none_from_list(all_reading_frames)
     return all_reading_frames
 
 
