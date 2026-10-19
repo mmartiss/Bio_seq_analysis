@@ -70,10 +70,22 @@ def get_all_possible_reading_frames(sequence):
 
     return frames
 
-if __name__ == '__main__':
-    # Original sequence
+def join_reverse_forward_reading_frames():
     input_seq = fasta_in()
     reverse_seq = reverse_sequence(input_seq)
+
+    forward = get_all_possible_reading_frames(input_seq)
+    reverse = get_all_possible_reading_frames(reverse_seq)
+
+    all_reading_frames = forward + reverse
+
+    return all_reading_frames
+
+
+if __name__ == '__main__':
+    # Original sequence
+    #input_seq = fasta_in()
+    #reverse_seq = reverse_sequence(input_seq)
 
     # Test for complementarity:
     #print(input_seq[0:10])
@@ -90,5 +102,9 @@ if __name__ == '__main__':
 
     #forward_frames = get_all_possible_reading_frames(input_seq)
     #for frame in forward_frames: print(frame)
+
+    orfs = join_reverse_forward_reading_frames()
+    print(orfs)
+
 
     #ATGAAATAG
