@@ -88,22 +88,27 @@ def join_reverse_forward_reading_frames():
     forward = get_all_possible_reading_frames(input_seq)
     reverse = get_all_possible_reading_frames(reverse_seq)
 
-    all_reading_frames = []
+    # all_reading_frames = []
     # for f, r in zip(forward, reverse):
     #     # Pasirodo negaliu naudoti append, nes prideda kaip sarasa
     #     all_reading_frames.extend(f)
     #     all_reading_frames.extend(r)
 
-    for f in forward:
-        all_reading_frames.extend(f)
-    for r in reverse:
-        all_reading_frames.extend(r)
+    # for f in forward:
+    #     all_reading_frames.extend(f)
+    # for r in reverse:
+    #     all_reading_frames.extend(r)
 
 
     #all_reading_frames = forward + reverse
-    clean_frames = remove_none_from_list(all_reading_frames)
-    return clean_frames
+    #clean_frames = remove_none_from_list(all_reading_frames)
+    return forward, reverse
 
+def find_possible_orfs(frames, sequence):
+
+    for frame in frames:
+        if frame == 'ATG' or frame == 'GTG' or frame == 'TTG':
+            
 
 if __name__ == '__main__':
     # Original sequence
@@ -126,9 +131,12 @@ if __name__ == '__main__':
     #forward_frames = get_all_possible_reading_frames(input_seq)
     #for frame in forward_frames: print(frame)
 
-    frames = join_reverse_forward_reading_frames()
-    print(frames)
-    print(len(frames))
+    # frames = join_reverse_forward_reading_frames()
+    # print(frames)
+
+    forward, reverse = join_reverse_forward_reading_frames()
+
+    # print(len(frames))
     print(len(input_seq))
 
     #ATGAAATAG
