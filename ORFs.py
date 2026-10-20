@@ -104,11 +104,11 @@ def join_reverse_forward_reading_frames():
     #clean_frames = remove_none_from_list(all_reading_frames)
     return forward, reverse
 
-def find_possible_orfs(frames, sequence):
+# def find_possible_orfs(frames, sequence):
 
-    for frame in frames:
-        if frame == 'ATG' or frame == 'GTG' or frame == 'TTG':
-            
+#     for frame in frames:
+#         if frame == 'ATG' or frame == 'GTG' or frame == 'TTG':
+#             for start
 
 if __name__ == '__main__':
     # Original sequence
