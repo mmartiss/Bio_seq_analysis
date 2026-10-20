@@ -89,10 +89,17 @@ def join_reverse_forward_reading_frames():
     reverse = get_all_possible_reading_frames(reverse_seq)
 
     all_reading_frames = []
-    for f, r in zip(forward, reverse):
-        # Pasirodo negaliu naudoti append, nes prideda kaip sarasa
+    # for f, r in zip(forward, reverse):
+    #     # Pasirodo negaliu naudoti append, nes prideda kaip sarasa
+    #     all_reading_frames.extend(f)
+    #     all_reading_frames.extend(r)
+
+    for f in forward:
         all_reading_frames.extend(f)
+    for r in reverse:
         all_reading_frames.extend(r)
+
+
     #all_reading_frames = forward + reverse
     clean_frames = remove_none_from_list(all_reading_frames)
     return clean_frames
@@ -100,7 +107,7 @@ def join_reverse_forward_reading_frames():
 
 if __name__ == '__main__':
     # Original sequence
-    #input_seq = fasta_in()
+    input_seq = fasta_in()
     #reverse_seq = reverse_sequence(input_seq)
 
     # Test for complementarity:
@@ -119,8 +126,9 @@ if __name__ == '__main__':
     #forward_frames = get_all_possible_reading_frames(input_seq)
     #for frame in forward_frames: print(frame)
 
-    orfs = join_reverse_forward_reading_frames()
-    print(orfs)
-
+    frames = join_reverse_forward_reading_frames()
+    print(frames)
+    print(len(frames))
+    print(len(input_seq))
 
     #ATGAAATAG
