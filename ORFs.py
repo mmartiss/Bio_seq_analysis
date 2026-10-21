@@ -47,6 +47,7 @@ def reading_frame(start, sequence):
     if start+3 <= len(sequence) and start >= 0:
         frame = sequence[start:start+3]
     else:
+        # I WANT TO RETURN NOTHING, THIS BRAKES CODEEE
         return None
     return frame
 
@@ -81,32 +82,35 @@ def remove_none_from_list(frame_list):
         #     del frame_list[frame_list.index(i)]
 
     # Maybe lambda
-    new_list = list(filter(lambda x: x != None, frame_list))
+    #new_list = list(filter(lambda x: x != None, frame_list))
     # Gal reiktu rasyti x is not None
+
+    #Nebeveikai, kai padariau sarasiukais
+    new_list = list(filter(lambda x: x[0] is not None, frame_list))
     return new_list
 
-def join_reverse_forward_reading_frames():
-    input_seq = fasta_in()
-    reverse_seq = reverse_sequence(input_seq)
+# def join_reverse_forward_reading_frames():
+#     input_seq = fasta_in()
+#     reverse_seq = reverse_sequence(input_seq)
 
-    forward = get_all_possible_reading_frames(input_seq)
-    reverse = get_all_possible_reading_frames(reverse_seq)
+#     forward = get_all_possible_reading_frames(input_seq)
+#     reverse = get_all_possible_reading_frames(reverse_seq)
 
-    # all_reading_frames = []
-    # for f, r in zip(forward, reverse):
-    #     # Pasirodo negaliu naudoti append, nes prideda kaip sarasa
-    #     all_reading_frames.extend(f)
-    #     all_reading_frames.extend(r)
+#     # all_reading_frames = []
+#     # for f, r in zip(forward, reverse):
+#     #     # Pasirodo negaliu naudoti append, nes prideda kaip sarasa
+#     #     all_reading_frames.extend(f)
+#     #     all_reading_frames.extend(r)
 
-    # for f in forward:
-    #     all_reading_frames.extend(f)
-    # for r in reverse:
-    #     all_reading_frames.extend(r)
+#     # for f in forward:
+#     #     all_reading_frames.extend(f)
+#     # for r in reverse:
+#     #     all_reading_frames.extend(r)
 
 
-    #all_reading_frames = forward + reverse
-    #clean_frames = remove_none_from_list(all_reading_frames)
-    return forward, reverse
+#     #all_reading_frames = forward + reverse
+#     #clean_frames = remove_none_from_list(all_reading_frames)
+#     return forward, reverse
 
 # def find_possible_orfs(frames, sequence):
 
