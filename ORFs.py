@@ -54,19 +54,23 @@ def reading_frame_shift(shift, sequence):
     # iteruoti per butent ta shift
     shifted_frame = []
     for i in range(shift, len(sequence), 3):
-        #print(i)
-        shifted_frame.append(reading_frame(i, sequence))
+        tmp_frame=[]
+        tmp_frame.append(reading_frame(i, sequence))
+        tmp_frame.append(shift)
+        tmp_frame.append(i)
+        shifted_frame.append(tmp_frame)
 
     return shifted_frame
 
 
 def get_all_possible_reading_frames(sequence):
-    frames=[]
     # reikia poslinkiu 0,1,2
     # reikia indekso keitimo kas 3
-
+    tmp_frames_list=[]
+    frames=[]
     for shift in range(3):
-        frames.append(reading_frame_shift(shift, sequence))
+        tmp_frames_list = reading_frame_shift(shift, sequence)
+        frames = frames + tmp_frames_list
 
     return frames
 
@@ -113,6 +117,16 @@ def join_reverse_forward_reading_frames():
 if __name__ == '__main__':
     # Original sequence
     input_seq = fasta_in()
+    reverse_seq = reverse_sequence(input_seq)
+    forward = get_all_possible_reading_frames(input_seq)
+    reverse = get_all_possible_reading_frames(reverse_seq)
+    forward_clean_frames = remove_none_from_list(forward)
+    reverse_clean_frames = remove_none_from_list(reverse)
+
+    print(forward_clean_frames)
+    print(reverse_clean_frames)
+
+
     #reverse_seq = reverse_sequence(input_seq)
 
     # Test for complementarity:
@@ -134,9 +148,10 @@ if __name__ == '__main__':
     # frames = join_reverse_forward_reading_frames()
     # print(frames)
 
-    forward, reverse = join_reverse_forward_reading_frames()
+    # forward, reverse = join_reverse_forward_reading_frames()
 
+    # print(forward)
     # print(len(frames))
-    print(len(input_seq))
+    #print(len(input_seq))
 
     #ATGAAATAG
