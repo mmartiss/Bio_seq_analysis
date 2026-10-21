@@ -118,6 +118,24 @@ def remove_none_from_list(frame_list):
 #         if frame == 'ATG' or frame == 'GTG' or frame == 'TTG':
 #             for start
 
+def find_possible_orfs(frames, strand):
+    for frame in frames:
+        if frame[0] == 'ATG' or frame[0] == 'GTG' or frame[0] == 'TTG':
+            for stop in frames:
+                if stop[0] == 'TAA' or stop[0] == 'TAG' or stop[0] == 'TGA':
+                    possible_orf = {
+                        "start" = frame[0],
+                        "stop" = stop[0],
+                        "shift" = frame[1],
+                        "strand" = strand,
+                        "sequence" = 
+                        "length" = 
+                    }
+
+    return possible_orf
+
+
+
 if __name__ == '__main__':
     # Original sequence
     input_seq = fasta_in()
@@ -130,7 +148,8 @@ if __name__ == '__main__':
     print(forward_clean_frames)
     print(reverse_clean_frames)
 
-
+    find_possible_orfs(forward_clean_frames, "+")
+    find_possible_orfs(reverse_clean_frames, "-")
     #reverse_seq = reverse_sequence(input_seq)
 
     # Test for complementarity:
