@@ -113,22 +113,27 @@ def remove_none_from_list(frame_list):
 #     return forward, reverse
 
 def find_possible_orfs(frames, strand, sequence):
+    which = 0
+    possible_orfs = []
     for frame in frames:
         if frame[0] == 'ATG' or frame[0] == 'GTG' or frame[0] == 'TTG':
             for stop in frames:
                 if frame[1] == stop[1] and frame[2] < stop[2] and (stop[0] == 'TAA' or stop[0] == 'TAG' or stop[0] == 'TGA'):
-                    seq = sequence[frame[2]:stop[2]+2]
+                    seq = sequence[frame[2]:stop[2]+3]
                     length = len(seq)//3 # nes antraip float
-                    possible_orf = {
+                    orf = {
                         "start": frame[0],
                         "stop": stop[0],
                         "shift": frame[1],
                         "strand": strand,
                         "sequence": seq,
-                        "length": length
+                        "length": length,
+                        "index" : which
                     }
+                    possible_orfs.append(orf)
+                    which += 1
 
-    return possible_orf
+    return possible_orfs
 
 
 
@@ -144,8 +149,12 @@ if __name__ == '__main__':
     print(forward_clean_frames)
     print(reverse_clean_frames)
 
-    find_possible_orfs(forward_clean_frames, "+", input_seq)
-    find_possible_orfs(reverse_clean_frames, "-", reverse_seq)
+    f_orfs = find_possible_orfs(forward_clean_frames, "+", input_seq)
+    r_orfs = find_possible_orfs(reverse_clean_frames, "-", reverse_seq)
+
+
+    print(f_orfs)
+    print(r_orfs)
     #reverse_seq = reverse_sequence(input_seq)
 
     # Test for complementarity:
