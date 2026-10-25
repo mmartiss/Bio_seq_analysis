@@ -166,6 +166,7 @@ def filter_overlapping_orfs(orfs_list, max_allowed_overlap=15):
             
     return sorted(clean_orfs, key=lambda x: x["genomic_start"])
 
+# https://pmc.ncbi.nlm.nih.gov/articles/PMC3454372/
 def filter_wrong_length_orfs(orfs_list):
     correct_orfs = []
     for orf in orfs_list:
@@ -174,12 +175,11 @@ def filter_wrong_length_orfs(orfs_list):
             
     return correct_orfs
 
-# https://pmc.ncbi.nlm.nih.gov/articles/PMC3454372/
-# def evaluate_possible_orfs(possible_orfs):
-#     correct_orfs = []
-#     for orf in possible_orfs:
-#         if orf["length"] >= 100 or orf["length"] <=700:
-#             if 
+def filtering_orfs(orfs_list):
+    correct_orfs = filter_wrong_length_orfs(orfs_list)
+    correct_orfs = filter_overlapping_orfs(correct_orfs, max_allowed_overlap=15)
+
+    return correct_orfs
 
 if __name__ == '__main__':
     # Original sequence
@@ -191,8 +191,8 @@ if __name__ == '__main__':
     forward_clean_frames = remove_none_from_list(forward)
     reverse_clean_frames = remove_none_from_list(reverse)
 
-    print(forward_clean_frames)
-    print(reverse_clean_frames)
+    #print(forward_clean_frames)
+    #print(reverse_clean_frames)
 
     f_orfs = find_possible_orfs(forward_clean_frames, "+", input_seq, N)
     r_orfs = find_possible_orfs(reverse_clean_frames, "-", reverse_seq, N)
@@ -202,6 +202,10 @@ if __name__ == '__main__':
 
     all_orfs = f_orfs + r_orfs
 
+    good_orfs = filtering_orfs(all_orfs)
+
+    print("GOOD:")
+    print(good_orfs)
 
     #reverse_seq = reverse_sequence(input_seq)
 
