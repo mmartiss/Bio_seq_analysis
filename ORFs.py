@@ -136,6 +136,12 @@ def find_possible_orfs(frames, strand, sequence):
     return possible_orfs
 
 
+# https://pmc.ncbi.nlm.nih.gov/articles/PMC3454372/
+def evaluate_possible_orfs(possible_orfs):
+    correct_orfs = []
+    for orf in possible_orfs:
+        if orf["length"] >= 100 or orf["length"] <=700:
+            if 
 
 if __name__ == '__main__':
     # Original sequence
