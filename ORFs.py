@@ -166,6 +166,13 @@ def filter_overlapping_orfs(orfs_list, max_allowed_overlap=15):
             
     return sorted(clean_orfs, key=lambda x: x["genomic_start"])
 
+def filter_wrong_length_orfs(orfs_list):
+    correct_orfs = []
+    for orf in orfs_list:
+        if 100 <= orf["length"] <= 700:
+            correct_orfs.append(orf)
+            
+    return correct_orfs
 
 # https://pmc.ncbi.nlm.nih.gov/articles/PMC3454372/
 # def evaluate_possible_orfs(possible_orfs):
