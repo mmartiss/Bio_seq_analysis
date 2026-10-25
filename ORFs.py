@@ -112,7 +112,7 @@ def remove_none_from_list(frame_list):
 #     #clean_frames = remove_none_from_list(all_reading_frames)
 #     return forward, reverse
 
-def find_possible_orfs(frames, strand, sequence):
+def find_possible_orfs(frames, strand, sequence, total_genome_len):
     which = 0
     possible_orfs = []
     for frame in frames:
@@ -121,11 +121,21 @@ def find_possible_orfs(frames, strand, sequence):
                 if frame[1] == stop[1] and frame[2] < stop[2] and (stop[0] == 'TAA' or stop[0] == 'TAG' or stop[0] == 'TGA'):
                     seq = sequence[frame[2]:stop[2]+3]
                     length = len(seq)//3 # nes antraip float
+
+                    if strand == "+":
+                        g_start = frame[2]
+                        g_end = stop[2] + 3
+                    else:  # "-"
+                        g_start = total_genome_len - (stop[2] + 3)
+                        g_end = total_genome_len - frame[2]
+
                     orf = {
                         "start": frame[0],
                         "stop": stop[0],
                         "shift": frame[1],
                         "strand": strand,
+                        "genomic_start": g_start,
+                        "genomic_end": g_end,
                         "sequence": seq,
                         "length": length,
                         "index" : which
@@ -137,15 +147,16 @@ def find_possible_orfs(frames, strand, sequence):
 
 
 # https://pmc.ncbi.nlm.nih.gov/articles/PMC3454372/
-def evaluate_possible_orfs(possible_orfs):
-    correct_orfs = []
-    for orf in possible_orfs:
-        if orf["length"] >= 100 or orf["length"] <=700:
-            if 
+# def evaluate_possible_orfs(possible_orfs):
+#     correct_orfs = []
+#     for orf in possible_orfs:
+#         if orf["length"] >= 100 or orf["length"] <=700:
+#             if 
 
 if __name__ == '__main__':
     # Original sequence
     input_seq = fasta_in()
+    N = len(input_seq)
     reverse_seq = reverse_sequence(input_seq)
     forward = get_all_possible_reading_frames(input_seq)
     reverse = get_all_possible_reading_frames(reverse_seq)
@@ -155,8 +166,8 @@ if __name__ == '__main__':
     print(forward_clean_frames)
     print(reverse_clean_frames)
 
-    f_orfs = find_possible_orfs(forward_clean_frames, "+", input_seq)
-    r_orfs = find_possible_orfs(reverse_clean_frames, "-", reverse_seq)
+    f_orfs = find_possible_orfs(forward_clean_frames, "+", input_seq, N)
+    r_orfs = find_possible_orfs(reverse_clean_frames, "-", reverse_seq, N)
 
 
     print(f_orfs)
