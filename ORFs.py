@@ -145,6 +145,27 @@ def find_possible_orfs(frames, strand, sequence, total_genome_len):
 
     return possible_orfs
 
+def filter_overlapping_orfs(orfs_list, max_allowed_overlap=15):
+    sorted_by_length = sorted(orfs_list, key=lambda x: x["length"], reverse=True)
+    
+    clean_orfs = []
+
+    for candidate in sorted_by_length:
+        keep_candidate = True
+
+        for accepted in clean_orfs:
+            if candidate["genomic_start"] < accepted["genomic_end"] and accepted["genomic_start"] < candidate["genomic_end"]:
+                overlap_len = min(candidate["genomic_end"], accepted["genomic_end"]) - max(candidate["genomic_start"], accepted["genomic_start"])
+                
+                if overlap_len > max_allowed_overlap:
+                    keep_candidate = False
+                    break
+        
+        if keep_candidate:
+            clean_orfs.append(candidate)
+            
+    return sorted(clean_orfs, key=lambda x: x["genomic_start"])
+
 
 # https://pmc.ncbi.nlm.nih.gov/articles/PMC3454372/
 # def evaluate_possible_orfs(possible_orfs):
@@ -169,9 +190,12 @@ if __name__ == '__main__':
     f_orfs = find_possible_orfs(forward_clean_frames, "+", input_seq, N)
     r_orfs = find_possible_orfs(reverse_clean_frames, "-", reverse_seq, N)
 
-
     print(f_orfs)
     print(r_orfs)
+
+    all_orfs = f_orfs + r_orfs
+
+
     #reverse_seq = reverse_sequence(input_seq)
 
     # Test for complementarity:
