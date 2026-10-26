@@ -1,5 +1,7 @@
 from Bio import SeqIO
 
+import argparse
+import sys
 
 # What needs to be done and how I visualize programs structure:
 # 1. Input
@@ -17,9 +19,9 @@ from Bio import SeqIO
 
 # Code recreated from:
 # https://lanadominkovic.medium.com/bioinformatics-101-reading-fasta-files-using-biopython-501c390c6820
-def fasta_in():
+def fasta_in(file):
     #for sequence in SeqIO.parse("input/JCVI-syn3.0.fasta", "fasta"):
-    for sequence in SeqIO.parse("input/test_2.fasta", "fasta"):
+    for sequence in SeqIO.parse(file, "fasta"):
         # print(sequence.id)
         # print(sequence.seq)
         # print(repr(sequence.seq))
@@ -181,9 +183,23 @@ def filtering_orfs(orfs_list):
 
     return correct_orfs
 
+def main():
+    parser = argparse.ArgumentParser(
+        description="Find possible ORFs"
+    )
+    parser.add_argument(
+        "-i", "--input", type=str, help="FIle name/path"
+    )
+    parser.add_argument(
+        "-d", "--default-file", type=str, default="input/test_2.fasta",
+        help="Default file path to use if -i is not provided",
+    )
+    
+
 if __name__ == '__main__':
+
     # Original sequence
-    input_seq = fasta_in()
+    input_seq = fasta_in(file)
     N = len(input_seq)
     reverse_seq = reverse_sequence(input_seq)
     forward = get_all_possible_reading_frames(input_seq)
@@ -205,7 +221,7 @@ if __name__ == '__main__':
     good_orfs = filtering_orfs(all_orfs)
 
     print("---------------------------------------------------------------")
-    print("                             GOOD:                             ")
+    print("                             GOOD:D                             ")
     print("---------------------------------------------------------------")
     print(good_orfs)
 
