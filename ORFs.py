@@ -195,7 +195,7 @@ def main():
         help="Default file path to use if -i is not provided",
     )
     parser.add_argument(
-        "--debug", action="store_true", help="Enable debug execution mode"
+        "--debug", action="store_true", help="Enable debug mode"
     )
 
     args = parser.parse_args()
@@ -205,15 +205,12 @@ def main():
     if not file:
         print("No input file specified via -i / --input.")
 
+
     print("\n--- Execution Started ---")
     print(f"Selected file: {file}")
     print(f"Debug mode: {'ENABLED' if args.debug else 'DISABLED'}")
 
-if __name__ == '__main__':
-
-    
-
-    # Original sequence
+    #Original sequence
     input_seq = fasta_in(file)
     N = len(input_seq)
     reverse_seq = reverse_sequence(input_seq)
@@ -239,6 +236,11 @@ if __name__ == '__main__':
     print("                             GOOD:D                             ")
     print("---------------------------------------------------------------")
     print(good_orfs)
+
+
+
+if __name__ == '__main__':
+    main()
 
     #reverse_seq = reverse_sequence(input_seq)
 
