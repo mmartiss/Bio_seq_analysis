@@ -194,9 +194,24 @@ def main():
         "-d", "--default-file", type=str, default="input/test_2.fasta",
         help="Default file path to use if -i is not provided",
     )
-    
+    parser.add_argument(
+        "--debug", action="store_true", help="Enable debug execution mode"
+    )
+
+    args = parser.parse_args()
+
+    file = args.input
+
+    if not file:
+        print("No input file specified via -i / --input.")
+
+    print("\n--- Execution Started ---")
+    print(f"Selected file: {file}")
+    print(f"Debug mode: {'ENABLED' if args.debug else 'DISABLED'}")
 
 if __name__ == '__main__':
+
+    
 
     # Original sequence
     input_seq = fasta_in(file)
