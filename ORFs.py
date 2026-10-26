@@ -191,20 +191,22 @@ def main():
         "-i", "--input", type=str, help="FIle name/path"
     )
     parser.add_argument(
-        "-d", "--default-file", type=str, default="input/test_2.fasta",
-        help="Default file path to use if -i is not provided",
+        "-d", "--default-file", action="store_true",
+        help="Run in test mode using input/test.fasta",
     )
     parser.add_argument(
         "--debug", action="store_true", help="Enable debug mode"
     )
 
     args = parser.parse_args()
-
     file = args.input
 
     if not file:
-        print("No input file specified via -i / --input.")
-        sys.exit(1)
+        if args.default_file:
+            file = "input/test.fasta"
+        else:
+            print("No input file specified via -i / --input.")
+            sys.exit(1)
 
 
     print("\n--- Execution Started ---")
