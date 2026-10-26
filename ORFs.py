@@ -19,7 +19,7 @@ from Bio import SeqIO
 # https://lanadominkovic.medium.com/bioinformatics-101-reading-fasta-files-using-biopython-501c390c6820
 def fasta_in():
     #for sequence in SeqIO.parse("input/JCVI-syn3.0.fasta", "fasta"):
-    for sequence in SeqIO.parse("input/test.fasta", "fasta"):
+    for sequence in SeqIO.parse("input/test_2.fasta", "fasta"):
         # print(sequence.id)
         # print(sequence.seq)
         # print(repr(sequence.seq))
@@ -197,14 +197,16 @@ if __name__ == '__main__':
     f_orfs = find_possible_orfs(forward_clean_frames, "+", input_seq, N)
     r_orfs = find_possible_orfs(reverse_clean_frames, "-", reverse_seq, N)
 
-    print(f_orfs)
-    print(r_orfs)
+    #print(f_orfs)
+    #print(r_orfs)
 
     all_orfs = f_orfs + r_orfs
 
     good_orfs = filtering_orfs(all_orfs)
 
-    print("GOOD:")
+    print("---------------------------------------------------------------")
+    print("                             GOOD:                             ")
+    print("---------------------------------------------------------------")
     print(good_orfs)
 
     #reverse_seq = reverse_sequence(input_seq)
