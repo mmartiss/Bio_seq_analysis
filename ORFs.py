@@ -208,8 +208,6 @@ def main():
             print("No input file specified via -i / --input.")
             sys.exit(1)
 
-
-    print("\n--- Execution Started ---")
     print(f"Selected file: {file}")
     print(f"Debug mode: {'ENABLED' if args.debug else 'DISABLED'}")
 
@@ -222,14 +220,22 @@ def main():
     forward_clean_frames = remove_none_from_list(forward)
     reverse_clean_frames = remove_none_from_list(reverse)
 
-    #print(forward_clean_frames)
-    #print(reverse_clean_frames)
+    if args.debug:
+        print("\nAll frames\n")
+        print("Forward cleaned frames")
+        print(forward_clean_frames)
+        print("\nReverse cleaned frames")
+        print(reverse_clean_frames)
 
     f_orfs = find_possible_orfs(forward_clean_frames, "+", input_seq, N)
     r_orfs = find_possible_orfs(reverse_clean_frames, "-", reverse_seq, N)
 
-    #print(f_orfs)
-    #print(r_orfs)
+    if args.debug:
+        print("\nAll possible frames \n")
+        print("Forward")
+        print(f_orfs)
+        print("\nReverse")
+        print(r_orfs)
 
     all_orfs = f_orfs + r_orfs
 
@@ -239,8 +245,6 @@ def main():
     print("                             GOOD:D                             ")
     print("---------------------------------------------------------------")
     print(good_orfs)
-
-
 
 if __name__ == '__main__':
     main()
