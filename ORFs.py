@@ -204,6 +204,7 @@ def main():
 
     if not file:
         print("No input file specified via -i / --input.")
+        sys.exit(1)
 
 
     print("\n--- Execution Started ---")
