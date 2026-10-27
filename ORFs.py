@@ -135,6 +135,10 @@ def find_possible_orfs(frames, strand, sequence, total_genome_len):
 
     return possible_orfs
 
+# INPUT: orfs_list (list), max_allowed_overlap - how much of the overlap is accepted
+# OUTPUT: clean_orfs (list) of orfs with removed orfs which overlapped, sorted by start position
+# filter_overlapping_orfs checks if there are overlapping ORFs, with a value which is accepted
+# If overlapping is more than 15, it removes the ORF
 def filter_overlapping_orfs(orfs_list, max_allowed_overlap=15):
     sorted_by_length = sorted(orfs_list, key=lambda x: x["length"], reverse=True)
     
@@ -156,6 +160,9 @@ def filter_overlapping_orfs(orfs_list, max_allowed_overlap=15):
             
     return sorted(clean_orfs, key=lambda x: x["genomic_start"])
 
+# INPUT: orfs_lsit (list)
+# OUTPUT: correct_orfs (list) - list of orfs which checks out for the length requirement
+# filter_wrong_length_orfs - checks if the possible orf is the right length
 # https://pmc.ncbi.nlm.nih.gov/articles/PMC3454372/
 def filter_wrong_length_orfs(orfs_list):
     correct_orfs = []
@@ -165,6 +172,9 @@ def filter_wrong_length_orfs(orfs_list):
             
     return correct_orfs
 
+# INPUT: orfs_list (list)
+# OUTPUT: correct_orfs (list) - list of orfs i deemed worthy
+# filtering_orfs joins two functions to check if possible orf is really an ORF
 def filtering_orfs(orfs_list):
     correct_orfs = filter_wrong_length_orfs(orfs_list)
     correct_orfs = filter_overlapping_orfs(correct_orfs, max_allowed_overlap=15)
