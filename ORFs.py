@@ -62,7 +62,7 @@ def reading_frame(start, sequence):
     return frame
 
 # INPUT: shift - 0 or 1 or 2 (reading frames shift), sequence
-# OUPTUT: shifter_frame - all reading frames for that shift
+# OUPTUT: shifter_frame - all reading frames for that shift, its a list with info on seq, shift and position
 # reading_frame_shift gets all reading frames for that exact shift
 def reading_frame_shift(shift, sequence):
     # iteruoti per butent ta shift
@@ -76,10 +76,10 @@ def reading_frame_shift(shift, sequence):
 
     return shifted_frame
 
-
+# INPUT: sequence
+# OUTPUT: frames - all possible reading frames (list)
+# get_all_possible_reading_frames creates a list from small lists of frames, for 3 shifts.
 def get_all_possible_reading_frames(sequence):
-    # reikia poslinkiu 0,1,2
-    # reikia indekso keitimo kas 3
     tmp_frames_list=[]
     frames=[]
     for shift in range(3):
@@ -88,10 +88,20 @@ def get_all_possible_reading_frames(sequence):
 
     return frames
 
+# INPUT: frame_list - list of frame lists
+# OUTPUT: new_list - list of frame lists (without lists with value None)
+# remove_none_from_list function is needed because reading_frame function 
+# creates None valued frames (if forming a frame was not possible)
 def remove_none_from_list(frame_list):
     new_list = list(filter(lambda x: x[0] is not None, frame_list))
     return new_list
 
+# INPUT: frames - reading frames list, strand - "+" or "-"
+# sequence, total_genome_len - length of the genome
+# OUTPUT: possible_orfs (list of dictionaries)
+# find_possible_orfs - creates a dictionary item of found possible ORF
+# It checks if start codon is right, does it have a stop codon.
+# Calculates genomic position of the ORF
 def find_possible_orfs(frames, strand, sequence, total_genome_len):
     which = 0
     possible_orfs = []
