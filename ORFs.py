@@ -3,13 +3,11 @@ from Bio import SeqIO
 import argparse
 import sys
 
-# What needs to be done and how I visualize programs structure:
-# 1. Input
-# 2. Read 6 reading frames
-# 3. Search for ORFs (start/stop codons) and their bounds
-# 4. Evaluate and filter ORFs (What critieria?)
-# 5. Print out results (Coordinates, sequence, reading frame, length, score)
-
+# USED CRITERIA FOR POSSIBLE ORFs
+# Length : from 100 to 700 of codons
+# Overlapping: max 15
+# Start codons: ATG, GTG, TTG
+# Stop codons: TAA, TGA, TAG
 
 # Testing bacteria genome
 # https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_037044595.1/
@@ -22,8 +20,8 @@ import sys
 # https://lanadominkovic.medium.com/bioinformatics-101-reading-fasta-files-using-biopython-501c390c6820
 
 # INPUT: file - file path, debug - true/false
-# OUTPUT: seq - fasta sequence read from the file
-# fasta_in function reads fasta file using SeqIO parser
+# OUTPUT: seq - fasta sequence read from the file (string)
+# fasta_in function reads fasta file using SeqIO parser. RETURNS ONLY THE LAST SEQUENCE!
 def fasta_in(file, debug):
     #for sequence in SeqIO.parse("input/JCVI-syn3.0.fasta", "fasta"):
     for sequence in SeqIO.parse(file, "fasta"):
@@ -102,6 +100,9 @@ def remove_none_from_list(frame_list):
 # find_possible_orfs - creates a dictionary item of found possible ORF
 # It checks if start codon is right, does it have a stop codon.
 # Calculates genomic position of the ORF
+# Also, I've decided thats its better to find all possible candidates for ORFs.
+# So after finding just one stop codon, code doesn't stop, and searches for the next stop codon.
+# also, for "-" strand, it finds the possition not in its own sequence but in the starting genome
 def find_possible_orfs(frames, strand, sequence, total_genome_len):
     which = 0
     possible_orfs = []
