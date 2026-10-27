@@ -15,10 +15,15 @@ import sys
 # https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_037044595.1/
 # Mycoplasma mycoides JCVI-syn3.0
 # Smallest genome
+# Breaks my pc :D
 
 
-# Code recreated from:
+# Code recreated from (input):
 # https://lanadominkovic.medium.com/bioinformatics-101-reading-fasta-files-using-biopython-501c390c6820
+
+# INPUT: file - file path, debug - true/false
+# OUTPUT: seq - fasta sequence read from the file
+# fasta_in function reads fasta file using SeqIO parser
 def fasta_in(file, debug):
     #for sequence in SeqIO.parse("input/JCVI-syn3.0.fasta", "fasta"):
     for sequence in SeqIO.parse(file, "fasta"):
@@ -31,6 +36,9 @@ def fasta_in(file, debug):
 
     return str(seq)
 
+# INPUT: sequence - nucleotide sequence
+# OUTPUT: reverse_seq - created complementary reverse sequence
+# reverse_sequence function creates complementary reverse sequence from original sequence
 def reverse_sequence(sequence):
     reverse_seq = []
     for n in list(sequence):
