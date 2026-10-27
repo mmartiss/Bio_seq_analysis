@@ -181,6 +181,11 @@ def filtering_orfs(orfs_list):
 
     return correct_orfs
 
+
+# INPUT: STDIN
+# OUTPUT: STDOUT
+# main function joins every function and also using argparse creates a help page with choosable options
+# for different functionalities of the program
 def main():
     parser = argparse.ArgumentParser(
         description="Find possible ORFs"
