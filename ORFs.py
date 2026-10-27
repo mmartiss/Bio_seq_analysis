@@ -50,6 +50,10 @@ def reverse_sequence(sequence):
     reverse_seq.reverse()
     return "".join(reverse_seq)
 
+
+# INPUT: start - position, sequence
+# OUTPUT: frame - a 3 nucleotide frame
+# reading_frame gets a reading frame of 3 if possible, otherwise returns None
 def reading_frame(start, sequence):
     if start+3 <= len(sequence) and start >= 0:
         frame = sequence[start:start+3]
@@ -57,6 +61,9 @@ def reading_frame(start, sequence):
         return None
     return frame
 
+# INPUT: shift - 0 or 1 or 2 (reading frames shift), sequence
+# OUPTUT: shifter_frame - all reading frames for that shift
+# reading_frame_shift gets all reading frames for that exact shift
 def reading_frame_shift(shift, sequence):
     # iteruoti per butent ta shift
     shifted_frame = []
