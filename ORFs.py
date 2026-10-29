@@ -254,8 +254,8 @@ def main():
         print("\nReverse cleaned frames")
         print(reverse_clean_frames)
 
-    f_orfs = find_possible_orfs(forward_clean_frames, "+", input_seq, N, ram)
-    r_orfs = find_possible_orfs(reverse_clean_frames, "-", reverse_seq, N, ram)
+    f_orfs = find_possible_orfs(forward_clean_frames, "+", input_seq, N, args.ram)
+    r_orfs = find_possible_orfs(reverse_clean_frames, "-", reverse_seq, N, args.ram)
 
     if args.debug:
         print("\nAll possible frames \n")
