@@ -182,6 +182,21 @@ def filtering_orfs(orfs_list):
 
     return correct_orfs
 
+# INPUT: orfs_list - list of orfs
+# OUTPUT: a fasta file of possible orfs
+# Function creates a fasta file of possible orfs
+def save_to_file(orfs_list, output_file="output.fasta"):
+    with open(output_file, "w") as file:
+        for i, orf in enumerate(orfs_list, start=1):
+            header = (
+                f">ORF_{i} "
+                f"strand={orf['strand']} "
+                f"start={orf['genomic_start']} "
+                f"end={orf['genomic_end']} "
+                f"length={orf['length']}"
+            )
+            file.write(header + "\n")
+            file.write(orf["sequence"] + "\n")
 
 # INPUT: STDIN
 # OUTPUT: STDOUT
@@ -249,6 +264,8 @@ def main():
     print("                             GOOD:D                             ")
     print("---------------------------------------------------------------")
     print(good_orfs)
+
+    save_to_file(good_orfs, )
 
 if __name__ == '__main__':
     main()
