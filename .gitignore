@@ -2,3 +2,4 @@ input/GCA_037044595.1_ASM3704459v1_genomic.fna
 input/JCVI-syn3.0.fasta
 input/test.fasta
 input/test_2.fasta
+*.fasta
