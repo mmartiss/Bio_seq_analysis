@@ -103,7 +103,7 @@ def remove_none_from_list(frame_list):
 # Also, I've decided thats its better to find all possible candidates for ORFs.
 # So after finding just one stop codon, code doesn't stop, and searches for the next stop codon.
 # also, for "-" strand, it finds the possition not in its own sequence but in the starting genome
-def find_possible_orfs(frames, strand, sequence, total_genome_len):
+def find_possible_orfs(frames, strand, sequence, total_genome_len, ram):
     which = 0
     possible_orfs = []
     for frame in frames:
@@ -133,6 +133,8 @@ def find_possible_orfs(frames, strand, sequence, total_genome_len):
                     }
                     possible_orfs.append(orf)
                     which += 1
+                    if not ram:
+                        break;
 
     return possible_orfs
 
@@ -216,6 +218,12 @@ def main():
     parser.add_argument(
         "--debug", action="store_true", help="Enable debug mode"
     )
+    parser.add_argument(
+        "-o", "--output", type=str, default="output.fasta", help="Output file name or path"
+    )
+    parser.add_argument(
+        "-r", "--ram", action="store_true", help="If you have ram to find more possible ORFs"
+    )
 
     args = parser.parse_args()
     file = args.input
@@ -246,8 +254,8 @@ def main():
         print("\nReverse cleaned frames")
         print(reverse_clean_frames)
 
-    f_orfs = find_possible_orfs(forward_clean_frames, "+", input_seq, N)
-    r_orfs = find_possible_orfs(reverse_clean_frames, "-", reverse_seq, N)
+    f_orfs = find_possible_orfs(forward_clean_frames, "+", input_seq, N, ram)
+    r_orfs = find_possible_orfs(reverse_clean_frames, "-", reverse_seq, N, ram)
 
     if args.debug:
         print("\nAll possible frames \n")
@@ -260,12 +268,16 @@ def main():
 
     good_orfs = filtering_orfs(all_orfs)
 
-    print("---------------------------------------------------------------")
-    print("                             GOOD:D                             ")
-    print("---------------------------------------------------------------")
-    print(good_orfs)
 
-    save_to_file(good_orfs, )
+    if args.debug:
+        print("---------------------------------------------------------------")
+        print("                             GOOD:D                             ")
+        print("---------------------------------------------------------------")
+        print(good_orfs)
+
+    save_to_file(good_orfs, args.output)
+    if args.debug:
+        print(f"Output file: {args.output}")
 
 if __name__ == '__main__':
     main()
