@@ -58,6 +58,14 @@ def main():
         "s3": {"ig": 1.00}
     }
 
+    emissions = {
+        "ig": {"A": 0.30, "C": 0.20, "G": 0.20, "T": 0.30},
+
+        "start1": {"A": 1.0},
+        "start2": {"T": 1.0},
+        "start3": {"G": 1.0}
+    }
+
     for state in states:
         total = sum(transitions[state].values())
         if not abs(total - 1.0) < 1e-9:
