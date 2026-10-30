@@ -36,15 +36,32 @@ def fasta_in(file, debug):
 def main():
     seq = fasta_in("input/test_2.fasta", True)
 
-    states = ["ig", "e1", "e2", "e3", "i"]
+    states = ["ig", "start1", "start2", "start3", "e1", "e2", "e3", "i0", "i1", "i2", "s1", "s2", "s3"]
 
     transitions = {
-        "ig":
-        "e1":
-        "e2":
-        "e3":
-        "i":
+        "ig": {"ig": 0.99, "start1": 0.01},
+
+        "start1": {"start2": 1.00},
+        "start2": {"start3": 1.00},
+        "start3": {"e1": 1.00},
+
+        "e1": {"e2": 0.95, "i1": 0.05},
+        "e2": {"e3": 0.95, "i2": 0.05},
+        "e3": {"e1": 0.84, "i0": 0.05, "s1": 0.11},
+
+        "i0": {"i0": 0.99, "e1": 0.01},
+        "i1": {"i1": 0.99, "e2": 0.01},
+        "i2": {"i2": 0.99, "e3": 0.01},
+
+        "s1": {"s2": 1.00},
+        "s2": {"s3": 1.00},
+        "s3": {"ig": 1.00}
     }
+
+    for state in states:
+        total = sum(transitions[state].values())
+        if not abs(total - 1.0) < 1e-9:
+            print(f"Invalid transitions for {state}: {total}")
 
     print(repr(seq))
 
