@@ -4,15 +4,16 @@ import argparse
 import sys
 
 def fasta_in(file, debug):
-    for sequence in SeqIO.parse(file, "fasta"):
+    seq = []
+    for sequences in SeqIO.parse(file, "fasta"):
         if debug:
-            print(sequence.id)
-            print(sequence.seq)
-            print(repr(sequence.seq))
-            print(len(sequence))
-        seq = sequence.seq
+            print(sequences.id)
+            print(sequences.seq)
+            print(repr(sequences.seq))
+            print(len(sequences))
+        seq.append(str(sequences.seq))
 
-    return str(seq)
+    return seq
 
 def main():
     parser = argparse.ArgumentParser(
@@ -37,13 +38,16 @@ def main():
 
     if not file:
         if args.default_file:
-            file = "input/test.fasta"
+            file = "input/test_motifs.fasta"
         else:
             print("No input file specified via -i / --input.")
             sys.exit(1)
 
     print(f"Selected file: {file}")
     print(f"Debug mode: {'ENABLED' if args.debug else 'DISABLED'}")
+
+    input_seqs = fasta_in(file, args.debug)
+    print(input_seqs)
 
 if __name__ == '__main__':
     main()
