@@ -30,19 +30,15 @@ def find_k_mers(seqs, k):
     return k_mers_list
 
 def k_mer_count(k_mers):
-    unique_k_mers = []
-    for l in k_mers:
-        unique_list = []
-        for k_mer in l:
-            if k_mer not in unique_list:
-                unique_list.append(k_mer)
-                unique_list.append("1")
-            else:
-                unique_list[]
+    counts = Counter()
 
-        unique_k_mers.append(unique_list)
+    for sequence_k_mers in k_mers:
+        counts.update(sequence_k_mers)
 
-    return unique_k_mers
+    for k_mer, count in counts.items():
+        print(k_mer, count)
+
+    return counts
 
 def main():
     parser = argparse.ArgumentParser(
@@ -82,8 +78,8 @@ def main():
     k_mers = find_k_mers(input_seqs, k)
     print(k_mers)
 
-    unique = k_mer_count(k_mers)
-    print(unique)
+    k_mer_counts = k_mer_count(k_mers)
+    print(k_mer_counts)
 
 if __name__ == '__main__':
     main()
