@@ -15,6 +15,19 @@ def fasta_in(file, debug):
 
     return seq
 
+def find_k_mers(seqs, k):
+    k_mers_list = []
+
+    for seq in seqs:
+        k_mers = []
+        for i in range(len(seq) - k + 1):
+            possible_k_mer = seq[i:i + k]
+            k_mers.append(str(possible_k_mer))
+
+        k_mers_list.append(k_mers)
+
+    return k_mers_list
+
 def main():
     parser = argparse.ArgumentParser(
         description="Find motifs"
@@ -48,6 +61,11 @@ def main():
 
     input_seqs = fasta_in(file, args.debug)
     print(input_seqs)
+
+    k = 3
+    k_mers = find_k_mers(input_seqs, k)
+    print(k_mers)
+
 
 if __name__ == '__main__':
     main()
