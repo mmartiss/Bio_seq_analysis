@@ -1,4 +1,5 @@
 from Bio import SeqIO
+from collections import Counter
 
 import argparse
 import sys
@@ -27,6 +28,21 @@ def find_k_mers(seqs, k):
         k_mers_list.append(k_mers)
 
     return k_mers_list
+
+def k_mer_count(k_mers):
+    unique_k_mers = []
+    for l in k_mers:
+        unique_list = []
+        for k_mer in l:
+            if k_mer not in unique_list:
+                unique_list.append(k_mer)
+                unique_list.append("1")
+            else:
+                unique_list[]
+
+        unique_k_mers.append(unique_list)
+
+    return unique_k_mers
 
 def main():
     parser = argparse.ArgumentParser(
@@ -66,6 +82,8 @@ def main():
     k_mers = find_k_mers(input_seqs, k)
     print(k_mers)
 
+    unique = k_mer_count(k_mers)
+    print(unique)
 
 if __name__ == '__main__':
     main()
