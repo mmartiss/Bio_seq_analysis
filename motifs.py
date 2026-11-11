@@ -29,16 +29,25 @@ def find_k_mers(seqs, k):
 
     return k_mers_list
 
-def k_mer_count(k_mers):
-    counts = Counter()
+def k_mer_count(k_mers, debug):
+    total_counts = Counter()
+    sequence_counts = []
 
-    for sequence_k_mers in k_mers:
-        counts.update(sequence_k_mers)
+    for index, sequence_k_mers in enumerate(k_mers, start=1):
+        counts = Counter(sequence_k_mers)
+        sequence_counts.append(counts)
+        total_counts.update(counts)
 
-    for k_mer, count in counts.items():
-        print(k_mer, count)
+        if debug:
+            print("Sequence: ", index)
+            for k_mer, count in counts.items():
+                print(k_mer, count)
 
-    return counts
+            print("Total: ", "\n")
+            for k_mer, count in total_counts.items():
+                print(k_mer, count)
+
+    return total_counts, sequence_counts
 
 def main():
     parser = argparse.ArgumentParser(
@@ -72,14 +81,17 @@ def main():
     print(f"Debug mode: {'ENABLED' if args.debug else 'DISABLED'}")
 
     input_seqs = fasta_in(file, args.debug)
-    print(input_seqs)
+    if args.debug:
+        print(input_seqs)
 
     k = 3
     k_mers = find_k_mers(input_seqs, k)
-    print(k_mers)
+    if args.debug:
+        print(k_mers)
 
-    k_mer_counts = k_mer_count(k_mers)
-    print(k_mer_counts)
+    total_counts, k_mer_counts = k_mer_count(k_mers, args.debug)
+    if args.debug:
+        print(k_mer_counts)
 
 if __name__ == '__main__':
     main()
