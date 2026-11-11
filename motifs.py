@@ -29,25 +29,26 @@ def find_k_mers(seqs, k):
 
     return k_mers_list
 
-def k_mer_count(k_mers, debug):
+def k_mer_count(k_mers, debug=False):
     total_counts = Counter()
     sequence_counts = []
 
     for index, sequence_k_mers in enumerate(k_mers, start=1):
         counts = Counter(sequence_k_mers)
-        sequence_counts.append(counts)
+        sequence_counts.append(dict(counts))
         total_counts.update(counts)
 
         if debug:
-            print("Sequence: ", index)
+            print("Sequence:", index)
             for k_mer, count in counts.items():
                 print(k_mer, count)
 
-            print("Total: ", "\n")
-            for k_mer, count in total_counts.items():
-                print(k_mer, count)
+    if debug:
+        print("\nTotal:")
+        for k_mer, count in total_counts.items():
+            print(k_mer, count)
 
-    return total_counts, sequence_counts
+    return dict(total_counts), sequence_counts
 
 def main():
     parser = argparse.ArgumentParser(
