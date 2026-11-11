@@ -90,8 +90,10 @@ def main():
         print(k_mers)
 
     total_counts, k_mer_counts = k_mer_count(k_mers, args.debug)
+
     if args.debug:
-        print(k_mer_counts)
+        print("Seperate sequences counts: \n", k_mer_counts, "\n")
+        print("All counts: \n", total_counts, "\n")
 
 if __name__ == '__main__':
     main()
