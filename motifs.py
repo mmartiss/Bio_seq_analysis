@@ -66,6 +66,10 @@ def main():
     parser.add_argument(
         "-o", "--output", type=str, default="output.fasta", help="Output file name or path"
     )
+    parser.add_argument(
+        "-k", "--kmer",  type=int, default=3, help="k count"
+    )
+
 
     args = parser.parse_args()
     file = args.input
@@ -84,7 +88,7 @@ def main():
     if args.debug:
         print(input_seqs)
 
-    k = 3
+    k = args.kmer
     k_mers = find_k_mers(input_seqs, k)
     if args.debug:
         print(k_mers)
