@@ -81,14 +81,16 @@ def main():
             print("No input file specified via -i / --input.")
             sys.exit(1)
 
+    k = args.kmer
+
     print(f"Selected file: {file}")
     print(f"Debug mode: {'ENABLED' if args.debug else 'DISABLED'}")
+    print(f"K count: {k}")
 
     input_seqs = fasta_in(file, args.debug)
     if args.debug:
         print(input_seqs)
 
-    k = args.kmer
     k_mers = find_k_mers(input_seqs, k)
     if args.debug:
         print(k_mers)
