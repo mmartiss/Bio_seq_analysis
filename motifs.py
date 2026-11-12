@@ -84,6 +84,17 @@ def nucleotide_frequencies(n_counts, debug):
         print(n_freqs)
     return n_freqs
 
+def k_mer_prob(n_freqs, k_mer, debug):
+    prob = 1
+    for n in k_mer:
+        prob = prob * n_freqs[n]
+
+    if debug:
+        print(k_mer, " : ", prob) 
+
+    return prob
+
+
 # -------------------------------------------------------------------------------------------------
 
 def main():
@@ -141,6 +152,7 @@ def main():
     counts = nucleotide_counts(input_seqs, args.debug)
     freqs = nucleotide_frequencies(counts, args.debug)
 
+    k_mer_prob(freqs, k_mers[0][0], args.debug)
 
 if __name__ == '__main__':
     main()
