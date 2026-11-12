@@ -16,6 +16,8 @@ def fasta_in(file, debug):
 
     return seq
 
+# -------------------------------------------------------------------------------------------------
+
 def find_k_mers(seqs, k):
     k_mers_list = []
 
@@ -49,6 +51,25 @@ def k_mer_count(k_mers, debug=False):
             print(k_mer, count)
 
     return dict(total_counts), sequence_counts
+
+# -------------------------------------------------------------------------------------------------
+
+def nucleotide_frequencies(k_mers):
+    a, t, c, g = 0
+
+    for seq in k_mers:
+        for n in seq:
+            if n == "A": a+=1
+            if n == "T": t+=1
+            if n == "C": c+=1
+            if n == "G": g+=1
+
+    n_prob = {"a": a, "t": t, "c": c, "g": g}
+
+    return n_prob
+
+
+# -------------------------------------------------------------------------------------------------
 
 def main():
     parser = argparse.ArgumentParser(
