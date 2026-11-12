@@ -54,20 +54,20 @@ def k_mer_count(k_mers, debug=False):
 
 # -------------------------------------------------------------------------------------------------
 
-def nucleotide_frequencies(k_mers):
-    a, t, c, g = 0
+def nucleotide_counts(input_seqs, debug):
+    a = t = c = g = 0
 
-    for seq in k_mers:
+    for seq in input_seqs:
         for n in seq:
             if n == "A": a+=1
             if n == "T": t+=1
             if n == "C": c+=1
             if n == "G": g+=1
 
-    n_prob = {"a": a, "t": t, "c": c, "g": g}
-
-    return n_prob
-
+    n_counts = {"A": a, "T": t, "C": c, "G": g}
+    if debug:
+        print(n_counts)
+    return n_counts
 
 # -------------------------------------------------------------------------------------------------
 
@@ -122,6 +122,9 @@ def main():
     if args.debug:
         print("Seperate sequences counts: \n", k_mer_counts, "\n")
         print("All counts: \n", total_counts, "\n")
+
+    freqs = nucleotide_frequencies(total_counts)
+
 
 if __name__ == '__main__':
     main()
