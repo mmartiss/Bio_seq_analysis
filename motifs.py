@@ -94,7 +94,17 @@ def k_mer_prob(n_freqs, k_mer, debug):
 
     return prob
 
+def probabilities(n_freqs, k_mers, debug):
+    p = []
 
+    for m in k_mers:
+        for mer in m:
+            p.append(k_mer_prob(n_freqs, mer, debug))
+
+    if debug:
+        print("Probabilities: \n", p)
+
+    return p
 # -------------------------------------------------------------------------------------------------
 
 def main():
@@ -153,6 +163,8 @@ def main():
     freqs = nucleotide_frequencies(counts, args.debug)
 
     k_mer_prob(freqs, k_mers[0][0], args.debug)
+
+    prob = probabilities(freqs, k_mers, args.debug)
 
 if __name__ == '__main__':
     main()
