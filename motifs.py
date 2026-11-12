@@ -69,6 +69,21 @@ def nucleotide_counts(input_seqs, debug):
         print(n_counts)
     return n_counts
 
+def frequencies(a, b, c, d):
+    return a/(a+b+c+d)
+
+def nucleotide_frequencies(n_counts, debug):
+    n_freqs = {
+        "A": frequencies(n_counts["A"], n_counts["T"], n_counts["C"], n_counts["G"]),
+        "T": frequencies(n_counts["T"], n_counts["A"], n_counts["C"], n_counts["G"]),
+        "C": frequencies(n_counts["C"], n_counts["A"], n_counts["T"], n_counts["G"]),
+        "G": frequencies(n_counts["G"], n_counts["A"], n_counts["T"], n_counts["C"])
+        }
+
+    if debug:
+        print(n_freqs)
+    return n_freqs
+
 # -------------------------------------------------------------------------------------------------
 
 def main():
@@ -123,7 +138,8 @@ def main():
         print("Seperate sequences counts: \n", k_mer_counts, "\n")
         print("All counts: \n", total_counts, "\n")
 
-    freqs = nucleotide_frequencies(total_counts)
+    counts = nucleotide_counts(input_seqs, args.debug)
+    freqs = nucleotide_frequencies(counts, args.debug)
 
 
 if __name__ == '__main__':
