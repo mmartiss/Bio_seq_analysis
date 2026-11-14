@@ -95,11 +95,12 @@ def k_mer_prob(n_freqs, k_mer, debug):
     return prob
 
 def probabilities(n_freqs, k_mers, debug):
-    p = []
+    p = {}
 
     for m in k_mers:
         for mer in m:
-            p.append(k_mer_prob(n_freqs, mer, debug))
+            #p.append(k_mer_prob(n_freqs, mer, debug))
+            p[mer] = k_mer_prob(n_freqs, mer, debug)
 
     if debug:
         print("Probabilities: \n", p)
@@ -107,6 +108,9 @@ def probabilities(n_freqs, k_mers, debug):
     return p
 # -------------------------------------------------------------------------------------------------
 
+# https://www.geeksforgeeks.org/machine-learning/what-is-gibbs-sampling/
+
+# -------------------------------------------------------------------------------------------------
 def main():
     parser = argparse.ArgumentParser(
         description="Find motifs"
