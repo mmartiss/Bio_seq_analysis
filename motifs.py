@@ -123,6 +123,20 @@ def count_k_mer_windows(k_mers, debug):
 
     return total_windows
 
+def k_mer_enrich(total_counts, prob, total_win, debug):
+    rez = {}
+
+    for k_mer, observed in total_counts.items():
+        expect = total_win * prob[k_mer]
+        enrich = observed / expect if expect > 0 else None
+
+        rez[k_mer] = {
+            "observed": observed,
+            "expoected": expect,
+            "enrichment": enrich
+        }
+
+        
 
 # -------------------------------------------------------------------------------------------------
 
@@ -191,5 +205,7 @@ def main():
     prob = probabilities(freqs, k_mers, args.debug)
 
     total_windows = count_k_mer_windows(k_mers, args.debug)
+
+
 if __name__ == '__main__':
     main()
