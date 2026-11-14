@@ -54,6 +54,7 @@ def k_mer_count(k_mers, debug=False):
 
 # -------------------------------------------------------------------------------------------------
 
+
 def nucleotide_counts(input_seqs, debug):
     a = t = c = g = 0
 
@@ -106,7 +107,26 @@ def probabilities(n_freqs, k_mers, debug):
         print("Probabilities: \n", p)
 
     return p
+
+def count_k_mer_windows(k_mers, debug):
+    total_windows = 0
+
+    for index, sequence_k_mers in enumerate(k_mers, start=1):
+        sequence_windows = len(sequence_k_mers)
+        total_windows += sequence_windows
+
+        if debug:
+            print(f"Sequence {index}: {sequence_windows} windows")
+
+    if debug:
+        print("Total windows: ", total_windows)
+
+    return total_windows
+
+
 # -------------------------------------------------------------------------------------------------
+
+# Gibbs sampling
 
 # https://www.geeksforgeeks.org/machine-learning/what-is-gibbs-sampling/
 
@@ -170,5 +190,6 @@ def main():
 
     prob = probabilities(freqs, k_mers, args.debug)
 
+    total_windows = count_k_mer_windows(k_mers, args.debug)
 if __name__ == '__main__':
     main()
