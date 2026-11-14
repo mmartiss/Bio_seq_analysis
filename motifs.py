@@ -132,14 +132,26 @@ def k_mer_enrich(total_counts, prob, total_win, debug):
 
         rez[k_mer] = {
             "observed": observed,
-            "expoected": expect,
+            "expected": expect,
             "enrichment": enrich
         }
 
         if debug:
-            print(k_mer, " : ", observed, " : ", expect.3f, " : ", enrich, "\n")
+            print(f"{k_mer}: o={observed}, ex={expect:.3f}, en={enrich}")
+            #print(k_mer, " : ", observed, " : ", expect.3f, " : ", enrich, "\n")
 
     return rez
+
+def get_enrich(item, debug):
+    value = item[1]
+    enrich = value["enrichment"]
+
+    if enrich is None:
+        if debug:
+            print(f"{value}: changed None to -1\n")
+        return -1
+
+    return enrich
 
 # -------------------------------------------------------------------------------------------------
 
@@ -208,6 +220,10 @@ def main():
     prob = probabilities(freqs, k_mers, args.debug)
 
     total_windows = count_k_mer_windows(k_mers, args.debug)
+
+    results = k_mer_enrich(total_counts, prob, total_windows, args.debug)
+
+    #print_results(results, k_mer_counts)
 
 
 if __name__ == '__main__':
