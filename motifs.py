@@ -153,6 +153,39 @@ def get_enrich(item, debug):
 
     return enrich
 
+# Disclaimer, this function was written with the help of AI
+# I didn't know how to make the output look GOOD.
+# So AI helped with that.
+def print_results(results, sequence_counts, debug):
+    def sorting_key(item):
+        return get_enrich(item, debug)
+
+    sorted_rez = sorted(
+        results.items(),
+        key=sorting_key,
+        reverse=True
+    )
+
+    print("\nK-mer\tObserved\tExpected\tEnrichment\tSequences")
+
+    for k_mer, values in sorted_rez:
+        sequence_number = sum(
+            1 for counts in sequence_counts if k_mer in counts
+        )
+
+        enrichment = values["enrichment"]
+        enrichment_text = (
+            f"{enrichment:.3f}" if enrichment is not None else "NA"
+        )
+
+        print(
+            f"{k_mer}\t"
+            f"{values['observed']}\t"
+            f"{values['expected']:.3f}\t"
+            f"{enrichment_text}\t"
+            f"{sequence_number}/{len(sequence_counts)}"
+        )
+
 # -------------------------------------------------------------------------------------------------
 
 # Gibbs sampling
@@ -223,7 +256,7 @@ def main():
 
     results = k_mer_enrich(total_counts, prob, total_windows, args.debug)
 
-    #print_results(results, k_mer_counts)
+    print_results(results, k_mer_counts, args.debug)
 
 
 if __name__ == '__main__':
