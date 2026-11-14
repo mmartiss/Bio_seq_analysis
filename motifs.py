@@ -136,7 +136,10 @@ def k_mer_enrich(total_counts, prob, total_win, debug):
             "enrichment": enrich
         }
 
-        
+        if debug:
+            print(k_mer, " : ", observed, " : ", expect.3f, " : ", enrich, "\n")
+
+    return rez
 
 # -------------------------------------------------------------------------------------------------
 
