@@ -157,16 +157,28 @@ def get_enrich(item, debug):
 # I didn't know how to make the output look GOOD.
 # So AI helped with that.
 def print_results(results, sequence_counts, debug):
+
+    # I'm sorry for this nested function, just wanted to remember that
     def sorting_key(item):
         return get_enrich(item, debug)
 
     sorted_rez = sorted(
         results.items(),
         key=sorting_key,
+        # I think it could look like this:
+        # key=lambda item: get_enrich(item, debug),
         reverse=True
     )
 
-    print("\nK-mer\tObserved\tExpected\tEnrichment\tSequences")
+    #print("\nK-mer\tObserved\tExpected\tEnrichment\tSequences")
+
+    print(
+        f"{'K-mer':<10}"
+        f"{'Observed':>10}"
+        f"{'Expected':>12}"
+        f"{'Enrichment':>12}"
+        f"{'Sequences':>12}"
+    )
 
     for k_mer, values in sorted_rez:
         sequence_number = sum(
@@ -178,12 +190,14 @@ def print_results(results, sequence_counts, debug):
             f"{enrichment:.3f}" if enrichment is not None else "NA"
         )
 
+        sequence_text = f"{sequence_number}/{len(sequence_counts)}"
+
         print(
-            f"{k_mer}\t"
-            f"{values['observed']}\t"
-            f"{values['expected']:.3f}\t"
-            f"{enrichment_text}\t"
-            f"{sequence_number}/{len(sequence_counts)}"
+            f"{k_mer:<10}"
+            f"{values['observed']:>10}"
+            f"{values['expected']:>12.3f}"
+            f"{enrichment_text:>12}"
+            f"{sequence_text:>12}"
         )
 
 # -------------------------------------------------------------------------------------------------
