@@ -172,13 +172,13 @@ def print_results(results, sequence_counts, debug, output):
 
     #print("\nK-mer\tObserved\tExpected\tEnrichment\tSequences")
 
-    print(
+    lines = [
         f"{'K-mer':<10}"
         f"{'Observed':>10}"
         f"{'Expected':>12}"
         f"{'Enrichment':>12}"
         f"{'Sequences':>12}"
-    )
+    ]
 
     for k_mer, values in sorted_rez:
         sequence_number = sum(
@@ -192,7 +192,7 @@ def print_results(results, sequence_counts, debug, output):
 
         sequence_text = f"{sequence_number}/{len(sequence_counts)}"
 
-        print(
+        line = (
             f"{k_mer:<10}"
             f"{values['observed']:>10}"
             f"{values['expected']:>12.3f}"
@@ -200,7 +200,14 @@ def print_results(results, sequence_counts, debug, output):
             f"{sequence_text:>12}"
         )
 
-        print(output)
+        lines.append(line)
+
+    table = "\n".join(lines)
+
+    print(table)
+
+    with open(output, "w", encoding="utf-8") as output_file:
+        output_file.write(table + "\n")
 
 # -------------------------------------------------------------------------------------------------
 
@@ -224,7 +231,7 @@ def main():
         "--debug", action="store_true", help="Enable debug mode"
     )
     parser.add_argument(
-        "-o", "--output", type=str, default="output.fasta", help="Output file name or path"
+        "-o", "--output", type=str, default="motifs_output.fasta", help="Output file name or path"
     )
     parser.add_argument(
         "-k", "--kmer",  type=int, default=3, help="k count"
@@ -252,7 +259,7 @@ def main():
     print("Extra INFO:")
     print("If you wnat to change or havent changed the output file")
     print("you can do it wiht -o or --output flags")
-    print("output.fasta is the default output file.")
+    print("motifs_output.fasta is the default output file.")
     print("--------------------------------------------------------")
 
     input_seqs = fasta_in(file, args.debug)
