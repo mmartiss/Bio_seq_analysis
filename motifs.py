@@ -156,7 +156,7 @@ def get_enrich(item, debug):
 # Disclaimer, this function was written with the help of AI
 # I didn't know how to make the output look GOOD.
 # So AI helped with that.
-def print_results(results, sequence_counts, debug):
+def print_results(results, sequence_counts, debug, output):
 
     # I'm sorry for this nested function, just wanted to remember that
     def sorting_key(item):
@@ -200,6 +200,8 @@ def print_results(results, sequence_counts, debug):
             f"{sequence_text:>12}"
         )
 
+        print(output)
+
 # -------------------------------------------------------------------------------------------------
 
 # Gibbs sampling
@@ -241,9 +243,17 @@ def main():
 
     k = args.kmer
 
+    print("--------------------------------------------------------")
     print(f"Selected file: {file}")
+    print(f"Output file: {args.output}")
     print(f"Debug mode: {'ENABLED' if args.debug else 'DISABLED'}")
     print(f"K count: {k}")
+    print("--------------------------------------------------------")
+    print("Extra INFO:")
+    print("If you wnat to change or havent changed the output file")
+    print("you can do it wiht -o or --output flags")
+    print("output.fasta is the default output file.")
+    print("--------------------------------------------------------")
 
     input_seqs = fasta_in(file, args.debug)
     if args.debug:
@@ -270,7 +280,7 @@ def main():
 
     results = k_mer_enrich(total_counts, prob, total_windows, args.debug)
 
-    print_results(results, k_mer_counts, args.debug)
+    print_results(results, k_mer_counts, args.debug, args.output)
 
 
 if __name__ == '__main__':
