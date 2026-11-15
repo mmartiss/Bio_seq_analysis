@@ -5,6 +5,9 @@ import argparse
 import sys
 import random
 
+# INPUT: file - FASTA file path, debug - true/false
+# OUTPUT: seq - list of nucleotide sequence strings
+# fasta_in function reads all sequences from a FASTA file using SeqIO
 def fasta_in(file, debug):
     seq = []
     for sequences in SeqIO.parse(file, "fasta"):
@@ -19,6 +22,9 @@ def fasta_in(file, debug):
 
 # -------------------------------------------------------------------------------------------------
 
+# INPUT: seqs - list of sequences, k - k-mer length
+# OUTPUT: k_mers_list - list of k-mer lists, one list per sequence
+# find_k_mers function extracts all overlapping k-mers while keeping their sequence of origin
 def find_k_mers(seqs, k):
     k_mers_list = []
 
@@ -32,6 +38,10 @@ def find_k_mers(seqs, k):
 
     return k_mers_list
 
+# INPUT: k_mers - list of k-mer lists, debug - true/false
+# OUTPUT: total_counts - dictionary of total counts, 
+# sequence_counts - list of per-sequence count dictionaries
+# k_mer_count function counts k-mers within each sequence and across all sequences
 def k_mer_count(k_mers, debug=False):
     total_counts = Counter()
     sequence_counts = []
@@ -56,6 +66,9 @@ def k_mer_count(k_mers, debug=False):
 # -------------------------------------------------------------------------------------------------
 
 
+# INPUT: input_seqs - iterable of nucleotide strings, debug - true/false
+# OUTPUT: n_counts - dictionary of A, T, C and G counts
+# nucleotide_counts function counts uppercase A, T, C and G across the supplied strings
 def nucleotide_counts(input_seqs, debug):
     a = t = c = g = 0
 
@@ -71,9 +84,15 @@ def nucleotide_counts(input_seqs, debug):
         print(n_counts)
     return n_counts
 
+# INPUT: a, b, c, d - nucleotide counts with a positive total
+# OUTPUT: relative frequency of a (float)
+# frequencies function divides the first count by the sum of all four counts
 def frequencies(a, b, c, d):
     return a/(a+b+c+d)
 
+# INPUT: n_counts - dictionary of A, T, C and G counts, debug - true/false
+# OUTPUT: n_freqs - dictionary of nucleotide frequencies
+# nucleotide_frequencies function converts nucleotide counts into frequencies using their total
 def nucleotide_frequencies(n_counts, debug):
     n_freqs = {
         "A": frequencies(n_counts["A"], n_counts["T"], n_counts["C"], n_counts["G"]),
@@ -86,6 +105,9 @@ def nucleotide_frequencies(n_counts, debug):
         print(n_freqs)
     return n_freqs
 
+# INPUT: n_freqs - background nucleotide frequencies, k_mer - nucleotide string, debug - true/false
+# OUTPUT: prob - background probability of the k-mer (float)
+# k_mer_prob function multiplies background probabilities assuming independent nucleotides
 def k_mer_prob(n_freqs, k_mer, debug):
     prob = 1
     for n in k_mer:
@@ -96,6 +118,9 @@ def k_mer_prob(n_freqs, k_mer, debug):
 
     return prob
 
+# INPUT: n_freqs - background frequencies, k_mers - list of k-mer lists, debug - true/false
+# OUTPUT: p - dictionary mapping each observed distinct k-mer to its background probability
+# probabilities function calculates background probabilities for the observed k-mers
 def probabilities(n_freqs, k_mers, debug):
     p = {}
 
@@ -109,6 +134,9 @@ def probabilities(n_freqs, k_mers, debug):
 
     return p
 
+# INPUT: k_mers - list of k-mer lists, debug - true/false
+# OUTPUT: total_windows - total number of k-mer windows (integer)
+# count_k_mer_windows function adds the number of windows from every sequence
 def count_k_mer_windows(k_mers, debug):
     total_windows = 0
 
@@ -124,6 +152,11 @@ def count_k_mer_windows(k_mers, debug):
 
     return total_windows
 
+# INPUT: total_counts - observed k-mer counts, prob - background probabilities, 
+# total_win - total windows, debug - true/false
+# OUTPUT: rez - dictionary of observed counts, expected counts and enrichment values
+# k_mer_enrich function calculates expected counts and observed/expected ratios 
+# uses None when expected is zero
 def k_mer_enrich(total_counts, prob, total_win, debug):
     rez = {}
 
@@ -143,6 +176,9 @@ def k_mer_enrich(total_counts, prob, total_win, debug):
 
     return rez
 
+# INPUT: item - k-mer and result dictionary pair, debug - true/false
+# OUTPUT: enrichment value, or -1 when enrichment is None
+# get_enrich function extracts an enrichment value for sorting results
 def get_enrich(item, debug):
     value = item[1]
     enrich = value["enrichment"]
@@ -157,9 +193,17 @@ def get_enrich(item, debug):
 # Disclaimer, this function was written with the help of AI
 # I didn't know how to make the output look GOOD.
 # So AI helped with that.
+# INPUT: results - enrichment results, sequence_counts - per-sequence counts, 
+# debug - true/false, output - output file path
+# OUTPUT: STDOUT and file
+# print_results function sorts k-mers by descending enrichment and saves the table, 
+# overwriting existing file contents
 def print_results(results, sequence_counts, debug, output):
 
     # I'm sorry for this nested function, just wanted to remember that
+    # INPUT: item - k-mer and result dictionary pair. debug comes from the enclosing function
+    # OUTPUT: sorting value returned by get_enrich
+    # sorting_key function provides the enrichment sorting key for the results table
     def sorting_key(item):
         return get_enrich(item, debug)
 
@@ -221,9 +265,13 @@ def print_results(results, sequence_counts, debug, output):
 # https://www.geeksforgeeks.org/machine-learning/what-is-gibbs-sampling/
 # https://www.youtube.com/watch?v=NRjhfyXWHuQ
 
-# Raise ValueError, wanted to do it earlier, but jsut got to it
-# Moved to main
+
+# INPUT: seqs - list of sequences, k - motif length, debug - true/false
+# OUTPUT: pos - list of zero-based motif starting positions
+# rand_pos function chooses one valid random motif starting position in each sequence
 def rand_pos(seqs, k, debug):
+    # Raise ValueError, wanted to do it earlier, but jsut got to it
+    # Moved to main
     pos = []
 
     if debug:
@@ -237,6 +285,9 @@ def rand_pos(seqs, k, debug):
 
     return pos
 
+# INPUT: seqs - list of sequences, debug - true/false
+# OUTPUT: selected - randomly selected zero-based sequence index
+# rand_seq function chooses the sequence to leave out when building the motif profile
 def rand_seq(seqs, debug):
     selected = random.randrange(len(seqs))
 
@@ -245,6 +296,10 @@ def rand_seq(seqs, debug):
 
     return selected
 
+# INPUT: seqs - sequences, selected - index to exclude, pos - motif positions, 
+# k - motif length, debug - true/false
+# OUTPUT: motifs - list of current motif strings excluding the selected sequence
+# get_motifs function extracts the current motifs from all sequences except the selected one
 def get_motifs(seqs, selected, pos, k, debug):
     motifs = []
 
@@ -263,7 +318,9 @@ def get_motifs(seqs, selected, pos, k, debug):
 
     return motifs
 
-# Karma points for reusing code:D
+# INPUT: motifs - equal-length motif strings, k - motif length, debug - true/false
+# OUTPUT: counts - list of nucleotide count dictionaries, one per motif position
+# motif_counts function counts A, T, C and G separately in each motif column
 def motif_counts(motifs, k, debug):
     counts = []
 
@@ -273,6 +330,7 @@ def motif_counts(motifs, k, debug):
         for motif in motifs:
             column.append(motif[position])
 
+        # Karma points for reusing code:D
         column_counts = nucleotide_counts(column, False)
         counts.append(column_counts)
 
@@ -282,6 +340,9 @@ def motif_counts(motifs, k, debug):
 
     return counts
 
+# INPUT: counts_matrix - per-position nucleotide counts, debug - true/false
+# OUTPUT: prof - list of per-position nucleotide probability dictionaries
+# motifs_prof function adds a pseudocount of one to each nucleotide count and normalizes each column
 def motifs_prof(counts_matrix, debug):
     prof = []
 
@@ -301,6 +362,11 @@ def motifs_prof(counts_matrix, debug):
 
     return prof
 
+# INPUT: seq - held-out sequence, k - motif length, profile - positional probabilities, 
+# background - nucleotide frequencies, debug - true/false
+# OUTPUT: weights - list of sampling weights indexed by candidate start position
+# motif_weights function scores every candidate window using the product of 
+# motif/background probability ratios
 def motif_weights(seq, k, profile, background, debug):
     weights = []
 
@@ -318,6 +384,9 @@ def motif_weights(seq, k, profile, background, debug):
 
     return weights
 
+# INPUT: weights - sampling weights for all candidate positions, debug - true/false
+# OUTPUT: selected - sampled zero-based motif starting position
+# sample_pos function randomly samples a position in proportion to its weight
 def sample_pos(weights, debug):
     pos = range(len(weights))
 
@@ -336,6 +405,11 @@ def sample_pos(weights, debug):
 # AI disclaimer, wrote this code mysel, but asked AI to make it into a function.
 # Didn't want it in the main function as masive code snippet.
 # So AI rewrote variable names and made this into a function.
+# INPUT: seqs - sequences, freqs - background frequencies, k - motif length, 
+# iterations - update count, debug - true/false
+# OUTPUT: best_positions - best position list, best_score - lowest mismatch score found
+# pos_loop function runs one Gibbs search and retains the initial 
+# or sampled solution with the fewest consensus mismatches.
 def pos_loop(seqs, freqs, k, iterations, debug):
     positions = rand_pos(seqs, k, debug)
 
@@ -376,6 +450,10 @@ def pos_loop(seqs, freqs, k, iterations, debug):
 
     return best_positions, best_score
 
+# INPUT: seqs - sequences, positions - motif starts, k - motif length, debug - true/false
+# OUTPUT: score - total number of mismatches to the column consensus (integer)
+# motif_score function evaluates motifs from all sequences 
+# lower scores mean fewer consensus mismatches.
 def motif_score(seqs, positions, k, debug):
     motifs = []
 
@@ -401,6 +479,10 @@ def motif_score(seqs, positions, k, debug):
 # It suggested this programmin decision for me
 # To use inf for restarts for gibbs
 # AI suggestion: use float("inf"), so first run score would be lower and it would become best starting result
+# INPUT: seqs - sequences, freqs - background frequencies, k - motif length, 
+# iterations - updates per run, restarts - number of runs, debug - true/false
+# OUTPUT: best_positions - best position list across runs, best_score - lowest mismatch score
+# gibbs_search function repeats Gibbs search from new random positions and keeps the best result
 def gibbs_search(seqs, freqs, k, iterations, restarts, debug):
     best_positions = None
     best_score = float("inf")
@@ -421,6 +503,11 @@ def gibbs_search(seqs, freqs, k, iterations, restarts, debug):
 
 # AI disclaimer
 # Asked AI to make output pretier
+# INPUT: seqs - sequences, pos - best motif starts, k - motif length, 
+# score - best mismatch score, output - file path
+# OUTPUT: STDOUT, prints the Gibbs table and appends it to the output file
+# gibbs_results function formats motif sequences and 
+# zero-based positions, then appends them after the first results table
 def gibbs_results(seqs, pos, k, score, output):
     lines = [
         "",
@@ -447,6 +534,10 @@ def gibbs_results(seqs, pos, k, score, output):
     with open(output, "a", encoding="utf-8") as output_file:
         output_file.write(table + "\n")
 # -------------------------------------------------------------------------------------------------
+# INPUT: STDIN and file
+# OUTPUT: STDOUT
+# main function parses options, seeds randomness, 
+# validates sequences and runs background enrichment and Gibbs motif searches
 def main():
     parser = argparse.ArgumentParser(
         description="Find motifs"
