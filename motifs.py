@@ -341,6 +341,9 @@ def sample_pos(weights, debug):
 def pos_loop(seqs, freqs, k, iterations, debug):
     positions = rand_pos(seqs, k, debug)
 
+    best_positions = positions.copy()
+    best_score = motif_score(seqs, positions, k, debug)
+
     for iteration in range(iterations):
         if debug:
             print(f"\nIteration {iteration + 1}")
@@ -364,7 +367,16 @@ def pos_loop(seqs, freqs, k, iterations, debug):
 
         positions[rand_sequence] = sample_pos(weights, debug)
 
-    return positions
+        score = motif_score(seqs, positions, k, False)
+
+        if score < best_score:
+            best_score = score
+            best_positions = positions.copy()
+
+            if debug:
+                print(f"New best score: {best_score}")
+
+    return best_positions, best_score
 
 def motif_score(seqs, positions, k, debug):
     motifs = []
@@ -505,9 +517,9 @@ def main():
 
     gibbs_results(input_seqs, positions, k, args.debug)
 
-    score = motif_score(input_seqs, positions, k, args.debug)
-    if args.debug:
-        print(score)
+    # score = motif_score(input_seqs, positions, k, args.debug)
+    # if args.debug:
+    #     print(score)
 
 if __name__ == '__main__':
     main()
