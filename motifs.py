@@ -222,15 +222,13 @@ def print_results(results, sequence_counts, debug, output):
 # https://www.youtube.com/watch?v=NRjhfyXWHuQ
 
 # Raise ValueError, wanted to do it earlier, but jsut got to it
+# Moved to main
 def rand_pos(seqs, k, debug):
     pos = []
 
     if debug:
         print("Random positions:")
     for seq in seqs:
-        if not 1<= k <= len(seq):
-            raise ValueError("k must be postitive and fit every seq")
-
         p = (random.randint(0, len(seq) - k))
         if debug:
             print(seq, " : ", p, ":", seq[p:p + k])
@@ -421,12 +419,33 @@ def gibbs_search(seqs, freqs, k, iterations, restarts, debug):
 
     return best_positions, best_score
 
-def gibbs_results(seqs, pos, k, debug):
+# AI disclaimer
+# Asked AI to make output pretier
+def gibbs_results(seqs, pos, k, score, output):
+    lines = [
+        "",
+        "--------------------------------------------------------",
+        "Gibbs sampling",
+        f"Best motif score: {score}",
+        "Positions are zero-based",
+        "--------------------------------------------------------",
+        f"{'Sequence':<12}{'Position':>10}  {'Motif'}"
+    ]
+
     for i, seq in enumerate(seqs):
         position = pos[i]
         motif = seq[position:position + k]
 
-        print(f"Sequence {i + 1}: position={position}, motif={motif}")
+        lines.append(
+            f"{i + 1:<12}{position:>10}  {motif}"
+        )
+
+    table = "\n".join(lines)
+
+    print(table)
+
+    with open(output, "a", encoding="utf-8") as output_file:
+        output_file.write(table + "\n")
 # -------------------------------------------------------------------------------------------------
 def main():
     parser = argparse.ArgumentParser(
@@ -542,8 +561,7 @@ def main():
         input_seqs, freqs, k, args.iter, args.restarts, args.debug
     )
 
-    print(f"\nBest motif score: {score}")
-    gibbs_results(input_seqs, positions, k, args.debug)
+    gibbs_results(input_seqs, positions, k, score, args.output)
     print("--------------------------------------------------------")
 
 
