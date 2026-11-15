@@ -247,6 +247,15 @@ def rand_seq(seqs, debug):
 
     return selected
 
+def get_motifs(seqs, selected, pos, k, debug):
+    motifs = []
+
+    for i in enumerate(seqs):
+        if i == selected:
+            continue
+
+        position = pos[i]
+        motif = seq[]
 
 # -------------------------------------------------------------------------------------------------
 def main():
