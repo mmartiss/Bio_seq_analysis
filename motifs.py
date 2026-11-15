@@ -335,6 +335,38 @@ def sample_pos(weights, debug):
 
     return selected
 
+# AI disclaimer, wrote this code mysel, but asked AI to make it into a function.
+# Didn't want it in the main function as masive code snippet.
+# So AI rewrote variable names and made this into a function.
+def pos_loop(seqs, freqs, k, iter, debug):
+    positions = rand_pos(seqs, k, debug)
+
+    for iteration in range(iter):
+        if debug:
+            print(f"\nIteration {iteration + 1}")
+
+        rand_sequence = rand_seq(seqs, debug)
+
+        motifs = get_motifs(
+            seqs, rand_sequence, positions, k, debug
+        )
+
+        counts_matrix = motif_counts(motifs, k, debug)
+        profile = motifs_prof(counts_matrix, debug)
+
+        weights = motif_weights(
+            seqs[rand_sequence],
+            k,
+            profile,
+            freqs,
+            debug
+        )
+
+        positions[rand_sequence] = sample_pos(weights, debug)
+
+    return positions
+
+
 # -------------------------------------------------------------------------------------------------
 def main():
     parser = argparse.ArgumentParser(
@@ -438,6 +470,8 @@ def main():
     profile = motifs_prof(counts_matrix, args.debug)
 
     weights = motif_weights(input_seqs[rand_sequence], k, profile, freqs, args.debug)
+
+    new_pos = pos_loop(input_seqs, freqs, k, args.iter, args.debug)
 
 if __name__ == '__main__':
     main()
