@@ -284,6 +284,27 @@ def motif_counts(motifs, k, debug):
 
     return counts
 
+def motifs_prof(counts_matrix, debug):
+    prof = []
+
+    for column_counts in counts_matrix:
+        adjusted_c = {} # I think it sould be a dict
+        # easier to access ig
+        for nucl, count in column_counts.items():
+            adjusted_c[nucl] = count + 1
+
+        # Haha more reusable code:D
+        column_freqs = nucleotide_frequencies(adjusted_c, debug)
+        prof.append(column_freqs)
+
+    if debug:
+        for pos, freqs in enumerate(prof):
+            print(f"Position {pos}: {freqs}")
+
+    return prof
+
+
+
 # -------------------------------------------------------------------------------------------------
 def main():
     parser = argparse.ArgumentParser(
