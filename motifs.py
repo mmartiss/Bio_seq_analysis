@@ -398,6 +398,29 @@ def motif_score(seqs, positions, k, debug):
 
     return score
 
+# AI disclaimer
+# This function was written with the help of ai.
+# It suggested this programmin decision for me
+# To use inf for restarts for gibbs
+# AI suggestion: use float("inf"), so first run score would be lower and it would become best starting result
+def gibbs_search(seqs, freqs, k, iterations, restarts, debug):
+    best_positions = None
+    best_score = float("inf")
+
+    for restart in range(restarts):
+        positions, score = pos_loop(
+            seqs, freqs, k, iterations, debug
+        )
+
+        if debug:
+            print(f"Restart {restart + 1}: best score={score}")
+
+        if score < best_score:
+            best_score = score
+            best_positions = positions.copy()
+
+    return best_positions, best_score
+
 def gibbs_results(seqs, pos, k, debug):
     for i, seq in enumerate(seqs):
         position = pos[i]
@@ -431,12 +454,19 @@ def main():
     )
     parser.add_argument(
         "--iter", type=int, default=1000,
-        help="Number of Gibbs sampling iterations"
+        help="Number of gibbs sampling iterations"
+    )
+    parser.add_argument(
+        "--restarts", type=int, default=10,
+        help="Number of independent gibbs sampling runs"
     )
 
     args = parser.parse_args()
     file = args.input
     random.seed(args.seed)
+
+    if args.iter < 1 or args.restarts < 1:
+        parser.error("--iter and --restarts must be positive")
 
     if not file:
         if args.default_file:
@@ -511,15 +541,32 @@ def main():
     # new_pos = pos_loop(input_seqs, freqs, k, args.iter, args.debug)
 
     # Commented out for dublication and test purposes.
-    positions = pos_loop(
-        input_seqs, freqs, k, args.iter, args.debug
-    )
+    # positions, score = pos_loop(
+    #     input_seqs, freqs, k, args.iter, args.debug
+    # )
 
-    gibbs_results(input_seqs, positions, k, args.debug)
+    # print(f"\nBest motif score: {score}")
+    # gibbs_results(input_seqs, positions, k, args.debug)
 
     # score = motif_score(input_seqs, positions, k, args.debug)
     # if args.debug:
     #     print(score)
+
+    print("--------------------------------------------------------")
+    print("Gibbs sampling")
+    print("--------------------------------------------------------")
+
+    positions, score = gibbs_search(
+        input_seqs,
+        freqs,
+        k,
+        args.iter,
+        args.restarts,
+        args.debug
+    )
+
+    print(f"\nBest motif score: {score}")
+    gibbs_results(input_seqs, positions, k, args.debug)
 
 if __name__ == '__main__':
     main()
