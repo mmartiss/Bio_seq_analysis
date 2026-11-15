@@ -234,7 +234,7 @@ def rand_pos(seqs, k, debug):
 
         p = (random.randint(0, len(seq) - k))
         if debug:
-            print(p)
+            print(seq, " : ", p, ":", seq[p:p + k])
 
         pos.append(p)
 
@@ -262,10 +262,14 @@ def main():
     parser.add_argument(
         "-k", "--kmer",  type=int, default=3, help="k count"
     )
-
+    parser.add_argument(
+        "--seed", type=int, default=42,
+        help="Random seed for reproducible results"
+    )
 
     args = parser.parse_args()
     file = args.input
+    random.seed(args.seed)
 
     if not file:
         if args.default_file:
@@ -281,6 +285,7 @@ def main():
     print(f"Output file: {args.output}")
     print(f"Debug mode: {'ENABLED' if args.debug else 'DISABLED'}")
     print(f"K count: {k}")
+    print(f"Seed: {args.seed}")
     print("--------------------------------------------------------")
     print("Extra INFO:")
     print("If you wnat to change or havent changed the output file")
