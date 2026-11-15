@@ -462,7 +462,7 @@ def main():
         "--debug", action="store_true", help="Enable debug mode"
     )
     parser.add_argument(
-        "-o", "--output", type=str, default="motifs_output.fasta", help="Output file name or path"
+        "-o", "--output", type=str, default="motifs_output.txt", help="Output file name or path"
     )
     parser.add_argument(
         "-k", "--kmer",  type=int, default=3, help="k count"
@@ -552,10 +552,6 @@ def main():
     # Background end
 
     # Gibbs start:
-
-    print("--------------------------------------------------------")
-    print("Gibbs sampling")
-    print("--------------------------------------------------------")
 
     positions, score = gibbs_search(
         input_seqs, freqs, k, args.iter, args.restarts, args.debug

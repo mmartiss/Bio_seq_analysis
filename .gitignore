@@ -3,3 +3,4 @@ input/JCVI-syn3.0.fasta
 input/test.fasta
 input/test_2.fasta
 *.fasta
+motifs_output.txt
