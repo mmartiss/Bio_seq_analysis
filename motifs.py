@@ -345,6 +345,10 @@ def main():
         "--seed", type=int, default=42,
         help="Random seed for reproducible results"
     )
+    parser.add_argument(
+        "--iter", type=int, default=1000,
+        help="Number of Gibbs sampling iterations"
+    )
 
     args = parser.parse_args()
     file = args.input
@@ -365,6 +369,7 @@ def main():
     print(f"Debug mode: {'ENABLED' if args.debug else 'DISABLED'}")
     print(f"K count: {k}")
     print(f"Seed: {args.seed}")
+    print(f"Gibbs sampling iterations: {args.iter}, default = 1000")
     print("--------------------------------------------------------")
     print("Extra INFO:")
     print("If you wnat to change or havent changed the output file")
@@ -416,6 +421,8 @@ def main():
     # profile[0]["A"] - A probability in first position of the motif
     # IF you can call it like that
     profile = motifs_prof(counts_matrix, args.debug)
+
+    weights = motif_weights(input_seqs[rand_sequence], k, profile, freqs, args.debug)
 
 if __name__ == '__main__':
     main()
