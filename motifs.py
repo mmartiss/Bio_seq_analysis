@@ -252,11 +252,16 @@ def get_motifs(seqs, selected, pos, k, debug):
 
     for i, seq in enumerate(seqs):
         if i == selected:
+            if debug:
+                print(f"Selected sequence to exlude: {i}, {seq}")
             continue
 
         position = pos[i]
         motif = seq[position:position + k]
         motifs.append(motif)
+
+        if debug:
+            print(f"Index: {i}, sequence: {seq}, pos: {position}, motif: {motif}")
 
     return motifs
 
@@ -345,6 +350,7 @@ def main():
 
     positions = rand_pos(input_seqs, k, args.debug)
     rand_sequence = rand_seq(input_seqs, args.debug)
+    motifs = get_motifs(input_seqs, rand_sequence, positions, k, args.debug)
 
 if __name__ == '__main__':
     main()
