@@ -495,6 +495,18 @@ def main():
     if args.debug:
         print(input_seqs)
 
+    # -------------------------------------------------------------------------------------------------
+    # Extra checks
+    if len(input_seqs) < 2:
+        parser.error("At least two sequences are required")
+
+    if k < 1 or any(len(seq) < k for seq in input_seqs):
+        parser.error("k must be positive and fit every sequence")
+
+    if any(set(seq) - set("ACGT") for seq in input_seqs):
+        parser.error("Sequences must contain only A, C, G and T")
+    # -------------------------------------------------------------------------------------------------
+
     k_mers = find_k_mers(input_seqs, k)
     if args.debug:
         print(k_mers)
@@ -521,6 +533,19 @@ def main():
     # Background end
 
     # Gibbs start:
+
+    print("--------------------------------------------------------")
+    print("Gibbs sampling")
+    print("--------------------------------------------------------")
+
+    positions, score = gibbs_search(
+        input_seqs, freqs, k, args.iter, args.restarts, args.debug
+    )
+
+    print(f"\nBest motif score: {score}")
+    gibbs_results(input_seqs, positions, k, args.debug)
+    print("--------------------------------------------------------")
+
 
     # positions = rand_pos(input_seqs, k, args.debug)
     # rand_sequence = rand_seq(input_seqs, args.debug) # seq to exclude
@@ -551,22 +576,6 @@ def main():
     # score = motif_score(input_seqs, positions, k, args.debug)
     # if args.debug:
     #     print(score)
-
-    print("--------------------------------------------------------")
-    print("Gibbs sampling")
-    print("--------------------------------------------------------")
-
-    positions, score = gibbs_search(
-        input_seqs,
-        freqs,
-        k,
-        args.iter,
-        args.restarts,
-        args.debug
-    )
-
-    print(f"\nBest motif score: {score}")
-    gibbs_results(input_seqs, positions, k, args.debug)
 
 if __name__ == '__main__':
     main()
