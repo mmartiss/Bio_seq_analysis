@@ -222,14 +222,21 @@ def print_results(results, sequence_counts, debug, output):
 # https://www.youtube.com/watch?v=NRjhfyXWHuQ
 
 # Raise ValueError, wanted to do it earlier, but jsut got to it
-def rand_pos(seqs, k):
+def rand_pos(seqs, k, debug):
     pos = []
+
+    if debug:
+        print("Random positions:")
 
     for seq in seqs:
         if not 1<= k <= len(seq):
             raise ValueError("k must be postitive and fit every seq")
 
-        pos.append(random.randint(0, len(seq) - k))
+        p = (random.randint(0, len(seq) - k))
+        if debug:
+            print(p)
+
+        pos.append(p)
 
     return pos
 
@@ -308,6 +315,11 @@ def main():
 
     print_results(results, k_mer_counts, args.debug, args.output)
 
+    # Background end
+
+    # Gibbs start:
+
+    positions = rand_pos(input_seqs, k, args.debug)
 
 if __name__ == '__main__':
     main()
