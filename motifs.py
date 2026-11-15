@@ -3,6 +3,7 @@ from collections import Counter
 
 import argparse
 import sys
+import random
 
 def fasta_in(file, debug):
     seq = []
@@ -218,6 +219,20 @@ def print_results(results, sequence_counts, debug, output):
 # Gibbs sampling
 
 # https://www.geeksforgeeks.org/machine-learning/what-is-gibbs-sampling/
+# https://www.youtube.com/watch?v=NRjhfyXWHuQ
+
+# Raise ValueError, wanted to do it earlier, but jsut got to it
+def rand_pos(seqs, k):
+    pos = []
+
+    for seq in seqs:
+        if not 1<= k <= len(seq):
+            raise ValueError("k must be postitive and fit every seq")
+
+        pos.append(random.randint(0, len(seq) - k))
+
+    return pos
+
 
 # -------------------------------------------------------------------------------------------------
 def main():
