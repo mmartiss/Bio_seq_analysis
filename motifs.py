@@ -370,7 +370,12 @@ def main():
     positions = rand_pos(input_seqs, k, args.debug)
     rand_sequence = rand_seq(input_seqs, args.debug) # seq to exclude
     motifs = get_motifs(input_seqs, rand_sequence, positions, k, args.debug)
+
     counts_matrix = motif_counts(motifs, k, args.debug)
+
+    if args.debug:
+        print("Motif lengths:", [len(motif) for motif in motifs])
+        print("Matrix columns:", len(counts_matrix))
 
 if __name__ == '__main__':
     main()
