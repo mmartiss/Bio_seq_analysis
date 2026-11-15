@@ -338,10 +338,10 @@ def sample_pos(weights, debug):
 # AI disclaimer, wrote this code mysel, but asked AI to make it into a function.
 # Didn't want it in the main function as masive code snippet.
 # So AI rewrote variable names and made this into a function.
-def pos_loop(seqs, freqs, k, iter, debug):
+def pos_loop(seqs, freqs, k, iterations, debug):
     positions = rand_pos(seqs, k, debug)
 
-    for iteration in range(iter):
+    for iteration in range(iterations):
         if debug:
             print(f"\nIteration {iteration + 1}")
 
