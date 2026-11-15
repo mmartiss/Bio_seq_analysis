@@ -366,7 +366,32 @@ def pos_loop(seqs, freqs, k, iterations, debug):
 
     return positions
 
+def motif_score(seqs, positions, k, debug):
+    motifs = []
 
+    for seq, position in zip(seqs, positions):
+        motifs.append(seq[position:position + k])
+
+    counts_matrix = motif_counts(motifs, k, debug)
+
+    score = 0
+
+    for column_counts in counts_matrix:
+        most_common = max(column_counts.values())
+        score += len(motifs) - most_common
+
+        if debug:
+            print("Most common: ", most_common)
+            print("Score: ", score)
+
+    return score
+
+def gibbs_results(seqs, pos, k, debug):
+    for i, seq in enumerate(seqs):
+        position = pos[i]
+        motif = seq[position:position + k]
+
+        print(f"Sequence {i + 1}: position={position}, motif={motif}")
 # -------------------------------------------------------------------------------------------------
 def main():
     parser = argparse.ArgumentParser(
@@ -455,23 +480,34 @@ def main():
 
     # Gibbs start:
 
-    positions = rand_pos(input_seqs, k, args.debug)
-    rand_sequence = rand_seq(input_seqs, args.debug) # seq to exclude
-    motifs = get_motifs(input_seqs, rand_sequence, positions, k, args.debug)
+    # positions = rand_pos(input_seqs, k, args.debug)
+    # rand_sequence = rand_seq(input_seqs, args.debug) # seq to exclude
+    # motifs = get_motifs(input_seqs, rand_sequence, positions, k, args.debug)
 
-    counts_matrix = motif_counts(motifs, k, args.debug)
+    # counts_matrix = motif_counts(motifs, k, args.debug)
 
+    # if args.debug:
+    #     print("Motif lengths:", [len(motif) for motif in motifs])
+    #     print("Matrix columns:", len(counts_matrix))
+
+    # # profile[0]["A"] - A probability in first position of the motif
+    # # IF you can call it like that
+    # profile = motifs_prof(counts_matrix, args.debug)
+
+    # weights = motif_weights(input_seqs[rand_sequence], k, profile, freqs, args.debug)
+
+    # new_pos = pos_loop(input_seqs, freqs, k, args.iter, args.debug)
+
+    # Commented out for dublication and test purposes.
+    positions = pos_loop(
+        input_seqs, freqs, k, args.iter, args.debug
+    )
+
+    gibbs_results(input_seqs, positions, k, args.debug)
+
+    score = motif_score(input_seqs, positions, k, args.debug)
     if args.debug:
-        print("Motif lengths:", [len(motif) for motif in motifs])
-        print("Matrix columns:", len(counts_matrix))
-
-    # profile[0]["A"] - A probability in first position of the motif
-    # IF you can call it like that
-    profile = motifs_prof(counts_matrix, args.debug)
-
-    weights = motif_weights(input_seqs[rand_sequence], k, profile, freqs, args.debug)
-
-    new_pos = pos_loop(input_seqs, freqs, k, args.iter, args.debug)
+        print(score)
 
 if __name__ == '__main__':
     main()
