@@ -204,7 +204,11 @@ def print_results(results, sequence_counts, debug, output):
 
     table = "\n".join(lines)
 
+    print("--------------------------------------------------------")
+    print("Motifs looked up with background")
+    print("--------------------------------------------------------")
     print(table)
+    print("--------------------------------------------------------")
 
     with open(output, "w", encoding="utf-8") as output_file:
         output_file.write(table + "\n")
