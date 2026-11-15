@@ -303,7 +303,22 @@ def motifs_prof(counts_matrix, debug):
 
     return prof
 
+def motif_weights(seq, k, profile, background, debug):
+    weights = []
 
+    for start in range(len(seq) - k + 1):
+        motif = seq[start:start + k]
+        weight = 1 # nto zero
+
+        for position, nucleotide in enumerate(motif):
+            weight *= (profile[position][nucleotide] / background[nucleotide])
+
+        weights.append(weight)
+
+        if debug:
+            print(f"Position {start}: motif={motif}, weight={weight}")
+
+    return weights
 
 # -------------------------------------------------------------------------------------------------
 def main():
@@ -397,6 +412,10 @@ def main():
     if args.debug:
         print("Motif lengths:", [len(motif) for motif in motifs])
         print("Matrix columns:", len(counts_matrix))
+
+    # profile[0]["A"] - A probability in first position of the motif
+    # IF you can call it like that
+    profile = motifs_prof(counts_matrix, args.debug)
 
 if __name__ == '__main__':
     main()
