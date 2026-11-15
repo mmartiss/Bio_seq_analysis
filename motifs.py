@@ -265,6 +265,25 @@ def get_motifs(seqs, selected, pos, k, debug):
 
     return motifs
 
+# Karma points for reusing code:D
+def motif_counts(motifs, k, debug):
+    counts = []
+
+    for position in range(k):
+        column = []
+
+        for motif in motifs:
+            column.append(motif[position])
+
+        column_counts = nucleotide_counts(column, False)
+        counts.append(column_counts)
+
+    if debug:
+        for position, column_counts in enumerate(counts):
+            print(f"Position {position}: {column_counts}")
+
+    return counts
+
 # -------------------------------------------------------------------------------------------------
 def main():
     parser = argparse.ArgumentParser(
@@ -349,8 +368,9 @@ def main():
     # Gibbs start:
 
     positions = rand_pos(input_seqs, k, args.debug)
-    rand_sequence = rand_seq(input_seqs, args.debug)
+    rand_sequence = rand_seq(input_seqs, args.debug) # seq to exclude
     motifs = get_motifs(input_seqs, rand_sequence, positions, k, args.debug)
+    counts_matrix = motif_counts(motifs, k, args.debug)
 
 if __name__ == '__main__':
     main()
