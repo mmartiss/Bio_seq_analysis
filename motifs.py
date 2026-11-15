@@ -320,6 +320,21 @@ def motif_weights(seq, k, profile, background, debug):
 
     return weights
 
+def sample_pos(weights, debug):
+    pos = range(len(weights))
+
+    # I didnt knwo how to do this better or more understandable
+    # Bc we need to choose the better weight choise, but
+    # still need a way to be able to choose a different weight
+    # which may not bet better
+    # Ig this is how to leave a posibility to try other positionss
+    selected = random.choices(pos, weights=weights, k=1)[0]
+
+    if debug:
+        print("New motif pos: ", selected)
+
+    return selected
+
 # -------------------------------------------------------------------------------------------------
 def main():
     parser = argparse.ArgumentParser(
