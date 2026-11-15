@@ -227,7 +227,6 @@ def rand_pos(seqs, k, debug):
 
     if debug:
         print("Random positions:")
-
     for seq in seqs:
         if not 1<= k <= len(seq):
             raise ValueError("k must be postitive and fit every seq")
@@ -239,6 +238,14 @@ def rand_pos(seqs, k, debug):
         pos.append(p)
 
     return pos
+
+def rand_seq(seqs, debug):
+    selected = random.randrange(len(seqs))
+
+    if debug:
+        print(f"Selected random seq: {selected}")
+
+    return selected
 
 
 # -------------------------------------------------------------------------------------------------
@@ -325,6 +332,7 @@ def main():
     # Gibbs start:
 
     positions = rand_pos(input_seqs, k, args.debug)
+    rand_sequence = rand_seq(input_seqs, args.debug)
 
 if __name__ == '__main__':
     main()
