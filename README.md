@@ -1,7 +1,52 @@
+# Motif search
+
+## 1. Motifs.py input/output
+
+The program identifies potential DNA sequence motifs using two methods: **k-mer enrichment analysis** and **Gibbs sampling**.
+
+**Input:** A FASTA file containing at least two DNA sequences consisting of A, T, C, and G nucleotides.
+**Output:** Results are displayed in STDOUT and saved to a `.txt` file.
+
+| Argument               | Description                         |
+| ---------------------- | ----------------------------------- |
+| `-h`, `--help`         | Display help message                |
+| `-i`, `--input`        | Specify input FASTA file            |
+| `-d`, `--default-file` | Use the default test file           |
+| `--debug`              | Enable detailed debugging output    |
+| `-o`, `--output`       | Specify output file                 |
+| `-k`, `--kmer`         | Set motif length                    |
+| `--seed`               | Set random seed                     |
+| `--iter`               | Set Gibbs sampling iterations       |
+| `--restarts`           | Set independent Gibbs sampling runs |
+
+## 2. K-mer Analysis and Background Model
+
+Here I extract all overlapping k-mers from the input seqs. Make sure not to miss any possible positions. Used `Counter` to count k-mer occurrences.
+
+A background model is calculated from the overall frequencies of A, T, C, and G, assuming that nucleotides occur independently. These frequencies are used to estimate the expected number of occurrences for each k-mer.
+
+The enrichment value is calculated as the ratio between observed and expected occurrences. 
+
+I have sorted results by enrichment, not frequency. Maybe I should add an option to choose which sorting the person needs.
+## 3. Gibbs Sampling Implementation
+
+Select random motif positions in each seq. Used a loop to iterate (there is an option for how many times), select one random sequence to exclude. And then during each loop constructed position porbability profile for remaining motifs.
+
+Added a pseudocount of `+1` for each nucleotide count, so now zero probabilities would be there. Then just for excluded seq evaluate all possible motif positions, using a ratio, between motif profile probabilities and background nucleotide probabilities.
+
+Used `random.choices()` so algo could maybe see more alternative solutions, so not always locally preferred position is chosen (highest score)
+
+The program evaluates solutions using the number of mismatches relative to the consensus sequence. Also added independent restarts, used with `--restarts` flag. 
+## 4. AI disclamer
+
+AI assistance was used primarily for output formatting, refactoring part of the Gibbs sampling loop into a separate function, and minor implementation suggestions.
+All parts where AI was used are commented in the code, with what exactly was done.
+Model used: GPT 6-sol light.
+
+
 # HMM:
 
 PDF is in the same directory.
-
 
 # ORFs python program:
 
@@ -47,8 +92,3 @@ Stop: TAA, TGA, TAG
 5. Argparse is not needed, but it helps using the program.
 6. Most important, I have the debug mode, so maybe it helps to understand how the program works or what it does step by step.
 7. I hope comments in the code makes everything clear.
-
-
-### Disclaimer
-Didn't remember how to use SeqIO. So kinda copied it from: \
-https://lanadominkovic.medium.com/bioinformatics-101-reading-fasta-files-using-biopython-501c390c6820
